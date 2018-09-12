@@ -3,18 +3,21 @@ package vue;
 import java.util.ArrayList;
 import java.util.List;
 
+import controleur.ControleurEquipe;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import modele.Equipe;
  public class NavigateurDesVues extends Application{
 	
-	 private Stage stade;
+	private Stage stade;
 	private VueAjouterEquipe vueAjouterEquipe;
 	private VueListeEquipe vueListeEquipe;
 	private VueEquipe vueEquipe;
+	private ControleurEquipe controleurEquipe;
 	
 	public NavigateurDesVues() 
 	{
+		
 		this.vueAjouterEquipe = new VueAjouterEquipe();
 		this.vueListeEquipe = new VueListeEquipe();
 		this.vueEquipe = new VueEquipe();
@@ -33,10 +36,7 @@ import modele.Equipe;
 		this.stade = stade;
 		this.stade.setScene(this.vueListeEquipe);
 		this.stade.show();
-	
-		this.naviguerVersVueListeEquipe();
-		//this.naviguerVersVueEquipe();
-		//this.naviguerVersVueAjouterEquipe();
+		this.controleurEquipe = new ControleurEquipe(this);
 	}
 
 	public VueAjouterEquipe getVueAjouterEquipe() {
