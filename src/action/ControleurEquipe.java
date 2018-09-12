@@ -18,6 +18,7 @@ public class ControleurEquipe {
 	private VueAjouterEquipe vueAjouterEquipe = null;
 	private VueListeEquipe vueListeEquipe = null;
 	private VueEquipe vueEquipe = null;
+	protected EquipeDAO equipeDAO = null;
 	
 	
 	public static ControleurEquipe getInstance()
@@ -28,6 +29,7 @@ public class ControleurEquipe {
 	
 	private ControleurEquipe() {
 		System.out.println("Initialisation du contrôleur");
+		this.equipeDAO = new EquipeDAO();
 	}
 	
 	public void activerVues(NavigateurDesVues navigateur)
@@ -41,11 +43,17 @@ public class ControleurEquipe {
 		
 		this.navigateur.naviguerVersVueEquipe();
 		
-		EquipeDAO equipeDAO = new EquipeDAO();
 		this.vueListeEquipe.afficherListeEquipe(equipeDAO.listerEquipes());
 		
 		this.navigateur.naviguerVersVueListeEquipe();
 		
-		//this.navigateur.naviguerVersVueAjouterEquipe();
+		this.navigateur.naviguerVersVueAjouterEquipe();
+	}
+	
+	public void notifierEnregistrerEquipe() {
+		System.out.println("ControleurEquipe.notifierEnregistreEquipe()");
+		Equipe mouton = this.navigateur.getVueAjouterEquipe().demanderEquipe();
+		//this.moutonDAO.ajouterMouton(mouton);
+		this.navigateur.naviguerVersVueAjouterEquipe();
 	}
 }

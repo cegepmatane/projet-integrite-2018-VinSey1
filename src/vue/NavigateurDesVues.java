@@ -31,6 +31,9 @@ import modele.Equipe;
 		this.stade.show();
 		this.controleurEquipe = ControleurEquipe.getInstance();
 		this.controleurEquipe.activerVues(this);
+		this.vueAjouterEquipe.setControleurEquipe(controleurEquipe);
+		this.vueListeEquipe.setControleurEquipe(controleurEquipe);
+		this.vueEquipe.setControleurEquipe(controleurEquipe);
 	}
 
 	public VueAjouterEquipe getVueAjouterEquipe() {

@@ -1,4 +1,5 @@
 package vue;
+import action.ControleurEquipe;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -12,6 +13,7 @@ public class VueEquipe extends Scene {
 	protected Label valeurNom;
 	protected Label valeurAnneeDeCreation;
 	protected Label valeurRegion;
+	private ControleurEquipe controleurEquipe = null;
 	
 	public VueEquipe() {
 		super(new GridPane(), 400,400);
@@ -34,5 +36,9 @@ public class VueEquipe extends Scene {
 		this.valeurAnneeDeCreation.setText(equipe.getAnneeDeCreation());
 		this.valeurNom.setText(equipe.getNom());
 		this.valeurRegion.setText(equipe.getRegion());
+	}
+	
+	public void setControleurEquipe(ControleurEquipe controleurEquipe) {
+		this.controleurEquipe = controleurEquipe;
 	}
 }

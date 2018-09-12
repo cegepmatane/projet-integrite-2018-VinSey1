@@ -3,6 +3,7 @@ package vue;
 import java.util.ArrayList;
 import java.util.List;
 
+import action.ControleurEquipe;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import modele.Equipe;
 public class VueListeEquipe extends Scene {
 
 	protected GridPane grilleEquipes;
+	private ControleurEquipe controleurEquipe = null;
 
 	public VueListeEquipe() {
 		super(new GridPane(), 400,400);
@@ -38,4 +40,7 @@ public class VueListeEquipe extends Scene {
 		}
 	}
 
+	public void setControleurEquipe(ControleurEquipe controleurEquipe) {
+		this.controleurEquipe = controleurEquipe;
+	}
 }

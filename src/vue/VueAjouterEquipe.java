@@ -1,6 +1,9 @@
 package vue;
 
+import action.ControleurEquipe;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,18 +12,31 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import modele.Equipe;
 
 public class VueAjouterEquipe extends Scene {
 
 	protected TextField valeurNom;
 	protected TextField valeurAnneeDeCreation;
 	protected TextField valeurRegion;
-	
+	private ControleurEquipe controleurEquipe = null;
+	protected Button actionEnregistrerEquipe = null;
+
 	public VueAjouterEquipe() {
 		super(new VBox(), 400, 400);
 		VBox panneau = (VBox) this.getRoot();
 
 		GridPane grilleEquipe = new GridPane();
+		
+		this.actionEnregistrerEquipe = new Button("Enregistrer");
+		
+		this.actionEnregistrerEquipe.setOnAction(new EventHandler<ActionEvent>() {
+ 			@Override
+			public void handle(ActionEvent arg0) {
+				
+				controleurEquipe.notifierEnregistrerEquipe();
+				
+			}});
 		
 		valeurNom = new TextField();
 		grilleEquipe.add(new Label("Nom : "), 0, 0);
@@ -36,6 +52,16 @@ public class VueAjouterEquipe extends Scene {
 		
 		panneau.getChildren().add(new Label("Ajouter une équipe"));
 		panneau.getChildren().add(grilleEquipe);
-		panneau.getChildren().add(new Button("Enregistrer"));
+		panneau.getChildren().add(this.actionEnregistrerEquipe);
+	}
+	
+	public void setControleurEquipe(ControleurEquipe controleurEquipe) {
+		this.controleurEquipe = controleurEquipe;
+	}
+	
+	public Equipe demanderEquipe()
+	{
+		Equipe equipe = new Equipe(this.valeurNom.getText(), this.valeurAnneeDeCreation.getText(), this.valeurRegion.getText());
+		return equipe;
 	}
 }
