@@ -31,18 +31,24 @@ public class EquipeDAO {
 			e.printStackTrace();
 		}
 		
+		List<Equipe> listeEquipes = new ArrayList<Equipe>();
 		try {
 			Connection connection = DriverManager.getConnection(BASEDEDONNEES_URL, BASEDEDONNEES_USAGER, BASEDEDONNEES_MOTDEPASSE);
 			Statement requeteListeEquipes = connection.createStatement();
 			ResultSet curseurListeEquipes = requeteListeEquipes.executeQuery("SELECT * FROM equipes");
-			curseurListeEquipes.next();
-			String nom = curseurListeEquipes.getString("nom");
-			String anneDeCreation = curseurListeEquipes.getString("annee");
-			String region = curseurListeEquipes.getString("region");
-			System.out.println("Équipe " + nom + " créée le " + anneDeCreation + " en " + region);
+			while(curseurListeEquipes.next()) {
+				String nom = curseurListeEquipes.getString("nom");
+				String anneDeCreation = curseurListeEquipes.getString("annee");
+				String region = curseurListeEquipes.getString("region");
+				System.out.println("Équipe " + nom + " créée le " + anneDeCreation + " en " + region);
+				Equipe equipe = new Equipe(nom, anneDeCreation, region);
+				listeEquipes.add(equipe);
+			}
+			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return this.simulerListeEquipe();
+		return listeEquipes;
 	}
 }
