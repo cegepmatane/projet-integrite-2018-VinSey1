@@ -3,6 +3,7 @@ package controleur;
 import java.util.ArrayList;
 import java.util.List;
 
+import accesseur.EquipeDAO;
 import modele.Equipe;
 import vue.NavigateurDesVues;
 import vue.VueAjouterEquipe;
@@ -40,14 +41,11 @@ public class ControleurEquipe {
 		
 		this.navigateur.naviguerVersVueEquipe();
 		
-		List listeEquipesTest = new ArrayList<Equipe>();
-		listeEquipesTest.add(new Equipe("Fnatic", "2011", "Europe"));
-		listeEquipesTest.add(new Equipe("Gambit", "2011", "Europe"));
-		listeEquipesTest.add(new Equipe("SKT", "2013", "Corée"));
-		this.vueListeEquipe.afficherListeEquipe(listeEquipesTest);
+		EquipeDAO equipeDAO = new EquipeDAO();
+		this.vueListeEquipe.afficherListeEquipe(equipeDAO.listerEquipes());
 		
 		this.navigateur.naviguerVersVueListeEquipe();
 		
-		this.navigateur.naviguerVersVueAjouterEquipe();
+		//this.navigateur.naviguerVersVueAjouterEquipe();
 	}
 }
