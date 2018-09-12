@@ -10,10 +10,10 @@ import modele.Equipe;
  public class NavigateurDesVues extends Application{
 	
 	private Stage stade;
-	private VueAjouterEquipe vueAjouterEquipe;
-	private VueListeEquipe vueListeEquipe;
-	private VueEquipe vueEquipe;
-	private ControleurEquipe controleurEquipe;
+	private VueAjouterEquipe vueAjouterEquipe = null;
+	private VueListeEquipe vueListeEquipe = null;
+	private VueEquipe vueEquipe = null;
+	private ControleurEquipe controleurEquipe = null;
 	
 	public NavigateurDesVues() 
 	{
@@ -21,14 +21,7 @@ import modele.Equipe;
 		this.vueAjouterEquipe = new VueAjouterEquipe();
 		this.vueListeEquipe = new VueListeEquipe();
 		this.vueEquipe = new VueEquipe();
-		
-		List listeEquipesTest = new ArrayList<Equipe>();
-		listeEquipesTest.add(new Equipe("Fnatic", "2011", "Europe"));
-		listeEquipesTest.add(new Equipe("Gambit", "2011", "Europe"));
-		listeEquipesTest.add(new Equipe("SKT", "2013", "Corée"));
-		this.vueListeEquipe.afficherListeEquipe(listeEquipesTest);
-		
-		//this.vueEquipe.afficherEquipe(new Equipe("Gambit", "2011", "Europe"));
+
 	}
 	
 	@Override
@@ -36,7 +29,8 @@ import modele.Equipe;
 		this.stade = stade;
 		this.stade.setScene(this.vueListeEquipe);
 		this.stade.show();
-		this.controleurEquipe = new ControleurEquipe(this);
+		this.controleurEquipe = ControleurEquipe.getInstance();
+		this.controleurEquipe.activerVues(this);
 	}
 
 	public VueAjouterEquipe getVueAjouterEquipe() {
