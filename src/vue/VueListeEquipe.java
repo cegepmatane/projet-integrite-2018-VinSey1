@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -11,19 +12,17 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import modele.Equipe;
 
-public class VueListeEquipe extends Application {
-	
+public class VueListeEquipe extends Scene {
+
 	protected GridPane grilleEquipes;
 
-	@Override
-	public void start(Stage stade) throws Exception {
-		Pane panneau = new Pane();
+	public VueListeEquipe() {
+		super(new Pane(), 400,400);
+		Pane panneau = (Pane) this.getRoot();
+		
 		grilleEquipes = new GridPane();
 		
-		panneau.getChildren().add(grilleEquipes);
-		
-		stade.setScene(new Scene(panneau, 400, 400));
-		stade.show();	
+		panneau.getChildren().add(grilleEquipes);	
 		
 		List listeEquipesTest = new ArrayList<Equipe>();
 		listeEquipesTest.add(new Equipe("Fnatic", "2011", "Europe"));

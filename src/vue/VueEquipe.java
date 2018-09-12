@@ -7,17 +7,15 @@ import javafx.stage.Stage;
 import modele.Equipe;
 import javafx.scene.control.Label;
 
-public class VueEquipe extends Application {
+public class VueEquipe extends Scene {
 
 	protected Label valeurNom;
 	protected Label valeurAnneeDeCreation;
 	protected Label valeurRegion;
 	
-	@Override
-	public void start(Stage stade) throws Exception {
-		
-		
-		Pane panneau = new Pane();
+	public VueEquipe() {
+		super(new Pane(),400,400);
+		Pane panneau = (Pane) this.getRoot();
 		GridPane grilleEquipe = new GridPane();
 		
 		valeurNom = new Label("Fnatic");
@@ -36,9 +34,6 @@ public class VueEquipe extends Application {
 		
 		
 		this.afficherEquipe(new Equipe("Gambit", "2011", "Europe"));
- 		
-		stade.setScene(new Scene(panneau, 400, 400));
-		stade.show();
 	}
 	
 	public void afficherEquipe(Equipe equipe) {

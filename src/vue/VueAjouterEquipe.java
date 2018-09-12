@@ -1,6 +1,7 @@
 package vue;
 
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,15 +10,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class VueAjouterEquipe extends Application {
-	
+public class VueAjouterEquipe extends Scene {
+
 	protected TextField valeurNom;
 	protected TextField valeurAnneeDeCreation;
 	protected TextField valeurRegion;
 	
-	@Override
-	public void start(Stage stade) throws Exception {
-		VBox panneau = new VBox();
+	public VueAjouterEquipe() {
+		super(new VBox(), 400, 400);
+		VBox panneau = (VBox) this.getRoot();
+
 		GridPane grilleEquipe = new GridPane();
 		
 		valeurNom = new TextField();
@@ -35,7 +37,5 @@ public class VueAjouterEquipe extends Application {
 		panneau.getChildren().add(new Label("Ajouter une équipe"));
 		panneau.getChildren().add(grilleEquipe);
 		panneau.getChildren().add(new Button("Enregistrer"));
-		stade.setScene(new Scene(panneau, 400, 400));
-		stade.show();	
 	}
 }
