@@ -3,7 +3,7 @@ package vue;
 import java.util.ArrayList;
 import java.util.List;
 
-import controleur.ControleurEquipe;
+import action.ControleurEquipe;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import modele.Equipe;

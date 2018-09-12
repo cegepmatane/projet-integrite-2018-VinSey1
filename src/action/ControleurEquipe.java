@@ -1,9 +1,9 @@
-package controleur;
+package action;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import accesseur.EquipeDAO;
+import donnee.EquipeDAO;
 import modele.Equipe;
 import vue.NavigateurDesVues;
 import vue.VueAjouterEquipe;

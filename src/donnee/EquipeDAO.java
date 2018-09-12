@@ -1,4 +1,4 @@
-package accesseur;
+package donnee;
 
 import java.util.ArrayList;
 import java.util.List;
