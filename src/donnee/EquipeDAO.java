@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.Connection;
 import modele.Equipe;
 
 public class EquipeDAO {
@@ -29,7 +32,14 @@ public class EquipeDAO {
 		}
 		
 		try {
-			DriverManager.getConnection(BASEDEDONNEES_URL, BASEDEDONNEES_USAGER, BASEDEDONNEES_MOTDEPASSE);
+			Connection connection = DriverManager.getConnection(BASEDEDONNEES_URL, BASEDEDONNEES_USAGER, BASEDEDONNEES_MOTDEPASSE);
+			Statement requeteListeEquipes = connection.createStatement();
+			ResultSet curseurListeEquipes = requeteListeEquipes.executeQuery("SELECT * FROM equipes");
+			curseurListeEquipes.next();
+			String nom = curseurListeEquipes.getString("nom");
+			String anneDeCreation = curseurListeEquipes.getString("annee");
+			String region = curseurListeEquipes.getString("region");
+			System.out.println("Équipe " + nom + " créée le " + anneDeCreation + " en " + region);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
