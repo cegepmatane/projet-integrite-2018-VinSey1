@@ -48,5 +48,6 @@ public class ControleurEquipe {
 		
 		this.navigateur.naviguerVersVueListeEquipe();
 		
+		this.navigateur.naviguerVersVueAjouterEquipe();
 	}
 }

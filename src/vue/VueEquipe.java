@@ -14,9 +14,8 @@ public class VueEquipe extends Scene {
 	protected Label valeurRegion;
 	
 	public VueEquipe() {
-		super(new Pane(),400,400);
-		Pane panneau = (Pane) this.getRoot();
-		GridPane grilleEquipe = new GridPane();
+		super(new GridPane(), 400,400);
+		GridPane grilleEquipe = (GridPane) this.getRoot();
 		
 		valeurNom = new Label("Fnatic");
 		grilleEquipe.add(new Label("Nom : "), 0, 0);
@@ -29,8 +28,6 @@ public class VueEquipe extends Scene {
 		valeurRegion = new Label("Europe");
 		grilleEquipe.add(new Label("Région : "), 0, 2);
 		grilleEquipe.add(valeurRegion, 1, 2);
-		
-		panneau.getChildren().add(grilleEquipe);
 	}
 	
 	public void afficherEquipe(Equipe equipe) {

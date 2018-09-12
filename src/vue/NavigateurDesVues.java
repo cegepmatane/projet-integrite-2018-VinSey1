@@ -27,7 +27,7 @@ import modele.Equipe;
 	@Override
 	public void start(Stage stade) throws Exception {
 		this.stade = stade;
-		this.stade.setScene(this.vueListeEquipe);
+		this.stade.setScene(null);
 		this.stade.show();
 		this.controleurEquipe = ControleurEquipe.getInstance();
 		this.controleurEquipe.activerVues(this);

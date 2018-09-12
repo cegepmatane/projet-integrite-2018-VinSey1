@@ -17,17 +17,14 @@ public class VueListeEquipe extends Scene {
 	protected GridPane grilleEquipes;
 
 	public VueListeEquipe() {
-		super(new Pane(), 400,400);
-		Pane panneau = (Pane) this.getRoot();
-		
-		grilleEquipes = new GridPane();
-		
-		panneau.getChildren().add(grilleEquipes);	
+		super(new GridPane(), 400,400);
+		grilleEquipes = (GridPane) this.getRoot();
 		
 	}
 	
 	public void afficherListeEquipe(List<Equipe> listeEquipes)
 	{
+		this.grilleEquipes.getChildren().clear();
 		int numero = 0;
 		this.grilleEquipes.add(new Label("Nom"), 0, numero);
 		this.grilleEquipes.add(new Label("Année de création"), 1, numero);
