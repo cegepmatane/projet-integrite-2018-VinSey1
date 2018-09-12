@@ -24,11 +24,6 @@ public class VueListeEquipe extends Scene {
 		
 		panneau.getChildren().add(grilleEquipes);	
 		
-		List listeEquipesTest = new ArrayList<Equipe>();
-		listeEquipesTest.add(new Equipe("Fnatic", "2011", "Europe"));
-		listeEquipesTest.add(new Equipe("Gambit", "2011", "Europe"));
-		listeEquipesTest.add(new Equipe("SKT", "2013", "Corée"));
-		this.afficherListeEquipe(listeEquipesTest);
 	}
 	
 	public void afficherListeEquipe(List<Equipe> listeEquipes)

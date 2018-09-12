@@ -31,9 +31,6 @@ public class VueEquipe extends Scene {
 		grilleEquipe.add(valeurRegion, 1, 2);
 		
 		panneau.getChildren().add(grilleEquipe);
-		
-		
-		this.afficherEquipe(new Equipe("Gambit", "2011", "Europe"));
 	}
 	
 	public void afficherEquipe(Equipe equipe) {
