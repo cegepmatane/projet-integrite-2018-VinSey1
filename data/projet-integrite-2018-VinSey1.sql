@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.4
 -- Dumped by pg_dump version 9.6.4
 
--- Started on 2018-09-13 15:44:08
+-- Started on 2018-09-13 16:27:51
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -141,15 +141,15 @@ ALTER TABLE ONLY joueur ALTER COLUMN id SET DEFAULT nextval('joueur_id_seq'::reg
 --
 
 COPY equipes (id, nom, annee, region) FROM stdin;
-1	Fnatic	2011	Europe
-4			
 5			
 6			
 7			
 8			
-2	Gambit	2011	Europe
 3	SKT	2009	Corée
 9	Test	Oui	OUAIS
+4			
+2	Gambit	2011	Europe
+1	Fnatic	2011	Europe
 \.
 
 
@@ -169,6 +169,9 @@ SELECT pg_catalog.setval('equipes_id_seq', 9, true);
 --
 
 COPY joueur (id, nom, nationalite, naissance, equipe) FROM stdin;
+2	Vincent	France	05/11/1998\n	1
+1	Valentin	France	04/11/1994	1
+3	Youssef	France	?/?/1998	2
 \.
 
 
@@ -216,7 +219,7 @@ ALTER TABLE ONLY joueur
     ADD CONSTRAINT one_equipe_to_many_joueurs FOREIGN KEY (equipe) REFERENCES equipes(id);
 
 
--- Completed on 2018-09-13 15:44:08
+-- Completed on 2018-09-13 16:27:51
 
 --
 -- PostgreSQL database dump complete

@@ -58,7 +58,7 @@ public class ControleurEquipe {
 		
 
 		
-		this.vueEditerEquipe.afficherListeJoueurs(joueurDAO.listerJoueurs());
+		//this.vueEditerEquipe.afficherListeJoueurs(joueurDAO.listerJoueurs());
 	}
 	
 	public void notifierEnregistrerEquipe() {
@@ -86,5 +86,6 @@ public class ControleurEquipe {
 	{
 		this.vueEditerEquipe.afficherEquipe(this.equipeDAO.rapporterEquipe(idEquipe));
 		this.navigateur.naviguerVersVueEditerEquipe();
+		this.vueEditerEquipe.afficherListeJoueurs(this.joueurDAO.listerJoueurs(idEquipe));
 	}
 }
