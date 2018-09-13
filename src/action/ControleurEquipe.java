@@ -47,13 +47,26 @@ public class ControleurEquipe {
 		
 		this.navigateur.naviguerVersVueListeEquipe();
 		
-		this.navigateur.naviguerVersVueAjouterEquipe();
+		//this.navigateur.naviguerVersVueAjouterEquipe();
 	}
 	
 	public void notifierEnregistrerEquipe() {
 		System.out.println("ControleurEquipe.notifierEnregistreEquipe()");
 		Equipe equipe = this.navigateur.getVueAjouterEquipe().demanderEquipe();
 		this.equipeDAO.ajouterEquipe(equipe);
+		this.vueListeEquipe.afficherListeEquipe(this.equipeDAO.listerEquipes());
 		this.navigateur.naviguerVersVueAjouterEquipe();
+	}
+	
+	public void notifierNaviguerAjouterEquipe()
+	{
+		System.out.println("ControleurEquipe.notifierNaviguerAjouterEquipe()");
+		this.navigateur.naviguerVersVueAjouterEquipe();
+	}
+	
+	public void notifierNaviguerModifierEquipe()
+	{
+		System.out.println("ControleurEquipe.notifierNaviguerModifierEquipe()");
+		this.navigateur.naviguerVersVueEditerEquipe();
 	}
 }

@@ -11,6 +11,7 @@ import modele.Equipe;
 	
 	private Stage stade;
 	private VueAjouterEquipe vueAjouterEquipe = null;
+	private VueEditerEquipe vueEditerEquipe = null;
 	private VueListeEquipe vueListeEquipe = null;
 	private VueEquipe vueEquipe = null;
 	private ControleurEquipe controleurEquipe = null;
@@ -21,6 +22,7 @@ import modele.Equipe;
 		this.vueAjouterEquipe = new VueAjouterEquipe();
 		this.vueListeEquipe = new VueListeEquipe();
 		this.vueEquipe = new VueEquipe();
+		this.vueEditerEquipe = new VueEditerEquipe();
 
 	}
 	
@@ -34,8 +36,13 @@ import modele.Equipe;
 		this.vueAjouterEquipe.setControleurEquipe(controleurEquipe);
 		this.vueListeEquipe.setControleurEquipe(controleurEquipe);
 		this.vueEquipe.setControleurEquipe(controleurEquipe);
+		this.vueEditerEquipe.setControleurEquipe(controleurEquipe);
 	}
 
+	public VueEditerEquipe getVueEditerEquipe() {
+		return vueEditerEquipe;
+	}
+	
 	public VueAjouterEquipe getVueAjouterEquipe() {
 		return vueAjouterEquipe;
 	}
@@ -60,6 +67,11 @@ import modele.Equipe;
 	
 	public void naviguerVersVueAjouterEquipe() {
 		stade.setScene(this.vueAjouterEquipe);
+		stade.show();
+	}
+	
+	public void naviguerVersVueEditerEquipe() {
+		stade.setScene(this.vueEditerEquipe);
 		stade.show();
 	}
 }
