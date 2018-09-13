@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import donnee.EquipeDAO;
+import donnee.JoueurDAO;
 import modele.Equipe;
 import modele.Joueur;
 import vue.NavigateurDesVues;
@@ -22,6 +23,7 @@ public class ControleurEquipe {
 	private VueEquipe vueEquipe = null;
 	protected EquipeDAO equipeDAO = null;
 	private VueEditerEquipe vueEditerEquipe = null;
+	private JoueurDAO joueurDAO = null;
 	
 	
 	public static ControleurEquipe getInstance()
@@ -33,6 +35,7 @@ public class ControleurEquipe {
 	private ControleurEquipe() {
 		System.out.println("Initialisation du contrôleur");
 		this.equipeDAO = new EquipeDAO();
+		this.joueurDAO = new JoueurDAO();
 	}
 	
 	public void activerVues(NavigateurDesVues navigateur)
@@ -53,20 +56,9 @@ public class ControleurEquipe {
 		
 		//this.navigateur.naviguerVersVueAjouterEquipe();
 		
-		List<Joueur> listeJoueurs = new ArrayList<Joueur>();
-		Joueur joueur;
-		joueur = new Joueur("Valentin", "France", "04/11/1994");
-		listeJoueurs.add(joueur);
-		joueur = new Joueur("Vincent", "France", "05/11/1998");
-		listeJoueurs.add(joueur);		
-		joueur = new Joueur("Michaël", "Canada", "?/?/?");
-		listeJoueurs.add(joueur);		
-		joueur = new Joueur("Eliott", "France", "?/?/?");
-		listeJoueurs.add(joueur);		
-		joueur = new Joueur("Youssef", "France", "?/?/?");
-		listeJoueurs.add(joueur);
+
 		
-		this.vueEditerEquipe.afficherListeJoueurs(listeJoueurs);
+		this.vueEditerEquipe.afficherListeJoueurs(joueurDAO.listerJoueurs());
 	}
 	
 	public void notifierEnregistrerEquipe() {
