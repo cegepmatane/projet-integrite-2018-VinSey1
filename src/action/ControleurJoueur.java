@@ -39,12 +39,12 @@ public class ControleurJoueur {
 	
 	public void notifierEnregistrerJoueur() {
 		System.out.println("ControleurJoueur.notifierEnregistrerJoueur()");
-		this.navigateur.naviguerVersVueListeEquipe();
+		this.navigateur.naviguerVersVueEditerEquipe();
 	}
 	
 	public void notifierEnregistrerNouveauJoueur() {
 		System.out.println("ControleurJoueur.notifierEnregistrerNouveauJoueur()");
-		this.navigateur.naviguerVersVueListeEquipe();
+		this.navigateur.naviguerVersVueEditerEquipe();
 	}
 	
 	public void notifierNaviguerAjouterJoueur()
