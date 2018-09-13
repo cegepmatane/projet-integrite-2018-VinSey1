@@ -59,4 +59,9 @@ public class ControleurJoueur {
 		this.vueEditerJoueur.afficherJoueur(this.joueurDAO.rapporterJoueur(idJoueur));
 		this.navigateur.naviguerVersVueEditerJoueur();
 	}
+
+	public void notifierSupprimerJoueur(int idJoueur) {
+		System.out.println("ControleurJoueur.notifierSupprimerJoueur");
+		System.out.println("Suppression du joueur "+this.joueurDAO.rapporterJoueur(idJoueur).getNom());
+	}
 }

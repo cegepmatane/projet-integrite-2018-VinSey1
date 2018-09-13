@@ -76,11 +76,20 @@ public class VueEditerEquipe  extends Scene {
 					controleurJoueur.notifierNaviguerEditerJoueur(joueurActuel.getId());
 					
 				}});
+			Button actionSupprimerJoueur = new Button("Supprimer");
+			
+			actionSupprimerJoueur.setOnAction(new EventHandler<ActionEvent>() {
+	 			@Override
+				public void handle(ActionEvent arg0) {
+					
+					controleurJoueur.notifierSupprimerJoueur(joueurActuel.getId());
+					
+				}});
 			this.grilleListeJoueurs.add(new Label(joueurActuel.getNom()+""), 0 ,iterateur);
 			this.grilleListeJoueurs.add(new Label(joueurActuel.getNaissance()+""), 1 ,iterateur);
 			this.grilleListeJoueurs.add(new Label(joueurActuel.getNationalite()+""),2 ,iterateur);
 			this.grilleListeJoueurs.add(actionEditerJoueur, 3, iterateur);
-			this.grilleListeJoueurs.add(new Button("Effacer"), 4, iterateur);
+			this.grilleListeJoueurs.add(actionSupprimerJoueur, 4, iterateur);
 			iterateur++;
 		}
 		Button actionAjouterJoueur = new Button("Ajouter Joueur");
