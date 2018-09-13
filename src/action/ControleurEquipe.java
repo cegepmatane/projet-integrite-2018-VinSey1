@@ -5,6 +5,7 @@ import java.util.List;
 
 import donnee.EquipeDAO;
 import modele.Equipe;
+import modele.Joueur;
 import vue.NavigateurDesVues;
 import vue.VueAjouterEquipe;
 import vue.VueEditerEquipe;
@@ -51,6 +52,21 @@ public class ControleurEquipe {
 		this.navigateur.naviguerVersVueListeEquipe();
 		
 		//this.navigateur.naviguerVersVueAjouterEquipe();
+		
+		List<Joueur> listeJoueurs = new ArrayList<Joueur>();
+		Joueur joueur;
+		joueur = new Joueur("Valentin", "France", "04/11/1994");
+		listeJoueurs.add(joueur);
+		joueur = new Joueur("Vincent", "France", "05/11/1998");
+		listeJoueurs.add(joueur);		
+		joueur = new Joueur("Michaël", "Canada", "?/?/?");
+		listeJoueurs.add(joueur);		
+		joueur = new Joueur("Eliott", "France", "?/?/?");
+		listeJoueurs.add(joueur);		
+		joueur = new Joueur("Youssef", "France", "?/?/?");
+		listeJoueurs.add(joueur);
+		
+		this.vueEditerEquipe.afficherListeJoueurs(listeJoueurs);
 	}
 	
 	public void notifierEnregistrerEquipe() {

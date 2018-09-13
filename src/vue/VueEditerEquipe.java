@@ -52,21 +52,17 @@ public class VueEditerEquipe  extends Scene {
 		
  		valeurRegion = new TextField("");
 		grilleEquipes.add(new Label("Région : "), 0, 2);
-		grilleEquipes.add(valeurRegion, 1, 2);	
+		grilleEquipes.add(valeurRegion, 1, 2);		
+			
+		panneau.getChildren().add(new Label("Editer une équipe"));
+		panneau.getChildren().add(grilleEquipes);
+		panneau.getChildren().add(new Label("Joueurs :"));
+		panneau.getChildren().add(grilleListeJoueurs);
+		panneau.getChildren().add(this.actionEnregistrerEquipe);
 		
-		List<Joueur> listeJoueurs = new ArrayList<Joueur>();
-		Joueur joueur;
-		joueur = new Joueur("Valentin", "France", "04/11/1994");
-		listeJoueurs.add(joueur);
-		joueur = new Joueur("Vincent", "France", "05/11/1998");
-		listeJoueurs.add(joueur);		
-		joueur = new Joueur("Michaël", "Canada", "?/?/?");
-		listeJoueurs.add(joueur);		
-		joueur = new Joueur("Eliott", "France", "?/?/?");
-		listeJoueurs.add(joueur);		
-		joueur = new Joueur("Youssef", "France", "?/?/?");
-		listeJoueurs.add(joueur);
-		
+	}
+	
+	public void afficherListeJoueurs(List<Joueur> listeJoueurs){
 		int iterateur = 0;
 		for(Joueur joueurActuel : listeJoueurs) {
 			this.grilleListeJoueurs.add(new Label(joueurActuel.getNom()+""), 0 ,iterateur);
@@ -76,13 +72,6 @@ public class VueEditerEquipe  extends Scene {
 			this.grilleListeJoueurs.add(new Button("Effacer"), 4, iterateur);
 			iterateur++;
 		}
-			
-		panneau.getChildren().add(new Label("Editer une équipe"));
-		panneau.getChildren().add(grilleEquipes);
-		panneau.getChildren().add(new Label("Joueurs :"));
-		panneau.getChildren().add(grilleListeJoueurs);
-		panneau.getChildren().add(this.actionEnregistrerEquipe);
-		
 	}
 	
 	public Equipe demanderEquipe()
