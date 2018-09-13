@@ -7,6 +7,7 @@ import donnee.EquipeDAO;
 import modele.Equipe;
 import vue.NavigateurDesVues;
 import vue.VueAjouterEquipe;
+import vue.VueEditerEquipe;
 import vue.VueEquipe;
 import vue.VueListeEquipe;
 
@@ -19,6 +20,7 @@ public class ControleurEquipe {
 	private VueListeEquipe vueListeEquipe = null;
 	private VueEquipe vueEquipe = null;
 	protected EquipeDAO equipeDAO = null;
+	private VueEditerEquipe vueEditerEquipe = null;
 	
 	
 	public static ControleurEquipe getInstance()
@@ -38,6 +40,7 @@ public class ControleurEquipe {
 		this.vueAjouterEquipe = navigateur.getVueAjouterEquipe();
 		this.vueEquipe = navigateur.getVueEquipe();
 		this.vueListeEquipe = navigateur.getVueListeEquipe();
+		this.vueEditerEquipe = navigateur.getVueEditerEquipe();
 				
 		this.vueEquipe.afficherEquipe(new Equipe("Gambit", "2011", "Europe"));
 		
@@ -52,10 +55,17 @@ public class ControleurEquipe {
 	
 	public void notifierEnregistrerEquipe() {
 		System.out.println("ControleurEquipe.notifierEnregistreEquipe()");
+		Equipe equipe = this.navigateur.getVueEditerEquipe().demanderEquipe();
+		this.equipeDAO.modifierEquipe(equipe);
+		this.vueListeEquipe.afficherListeEquipe(this.equipeDAO.listerEquipes());
+		this.navigateur.naviguerVersVueListeEquipe();
+	}
+	
+	public void notifierEnregistrerNouvelleEquipe() {
 		Equipe equipe = this.navigateur.getVueAjouterEquipe().demanderEquipe();
 		this.equipeDAO.ajouterEquipe(equipe);
 		this.vueListeEquipe.afficherListeEquipe(this.equipeDAO.listerEquipes());
-		this.navigateur.naviguerVersVueAjouterEquipe();
+		this.navigateur.naviguerVersVueListeEquipe();
 	}
 	
 	public void notifierNaviguerAjouterEquipe()
@@ -64,9 +74,9 @@ public class ControleurEquipe {
 		this.navigateur.naviguerVersVueAjouterEquipe();
 	}
 	
-	public void notifierNaviguerModifierEquipe()
+	public void notifierNaviguerEditerEquipe(int idEquipe)
 	{
-		System.out.println("ControleurEquipe.notifierNaviguerModifierEquipe()");
+		this.vueEditerEquipe.afficherEquipe(this.equipeDAO.rapporterEquipe(idEquipe));
 		this.navigateur.naviguerVersVueEditerEquipe();
 	}
 }

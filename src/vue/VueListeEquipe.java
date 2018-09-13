@@ -42,7 +42,7 @@ public class VueListeEquipe extends Scene {
 			actionEditerEquipe.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0) {
-					controleurEquipe.notifierNaviguerModifierEquipe();
+					controleurEquipe.notifierNaviguerEditerEquipe(equipe.getId());
 				}});
 			numero++;
 			this.grilleEquipes.add(new Label(equipe.getNom()), 0, numero);

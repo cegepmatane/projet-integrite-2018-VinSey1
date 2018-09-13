@@ -2,6 +2,7 @@ package modele;
 
 public class Equipe {
 	
+	protected int id;
 	protected String nom;
 	protected String anneeDeCreation;
 	protected String region;
@@ -16,6 +17,13 @@ public class Equipe {
 		return nom;
 	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getId() {
+		return id;
+	}
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
