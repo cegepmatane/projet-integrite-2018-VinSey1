@@ -3,6 +3,7 @@ package vue;
 
 
 import action.ControleurEquipe;
+import action.ControleurJoueur;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,7 +23,7 @@ public class VueAjouterJoueur extends Application {
 	protected TextField valeurNom;
 	protected TextField valeurNaissance;
 	protected TextField valeurNationalite;
-	//private ControleurJoueur controleurJoueur = null;
+	private ControleurJoueur controleurJoueur = null;
 	protected Button actionEnregistrerJoueur = null;
 
 	@Override
@@ -60,8 +61,8 @@ public class VueAjouterJoueur extends Application {
 		stade.show();
 	}
 	
-	public void setControleurEquipe(ControleurEquipe controleurEquipe) {
-		//this.controleurJoueur = controleurJoueur;
+	public void setControleurEquipe(ControleurJoueur controleurJoueur) {
+		this.controleurJoueur = controleurJoueur;
 	}
 	
 	public Joueur demanderJoueur()
