@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.4
 -- Dumped by pg_dump version 9.6.4
 
--- Started on 2018-09-12 19:19:23
+-- Started on 2018-09-12 23:40:03
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -40,7 +40,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 186 (class 1259 OID 24590)
+-- TOC entry 186 (class 1259 OID 24601)
 -- Name: equipes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -55,7 +55,7 @@ CREATE TABLE equipes (
 ALTER TABLE equipes OWNER TO postgres;
 
 --
--- TOC entry 185 (class 1259 OID 24588)
+-- TOC entry 185 (class 1259 OID 24599)
 -- Name: equipes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -79,7 +79,7 @@ ALTER SEQUENCE equipes_id_seq OWNED BY equipes.id;
 
 
 --
--- TOC entry 2002 (class 2604 OID 24593)
+-- TOC entry 2002 (class 2604 OID 24604)
 -- Name: equipes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -87,15 +87,14 @@ ALTER TABLE ONLY equipes ALTER COLUMN id SET DEFAULT nextval('equipes_id_seq'::r
 
 
 --
--- TOC entry 2123 (class 0 OID 24590)
+-- TOC entry 2123 (class 0 OID 24601)
 -- Dependencies: 186
 -- Data for Name: equipes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY equipes (id, nom, annee, region) FROM stdin;
+1	Fnatic	2011	Europe
 2	Fnatic	2011	Europe
-1	Gambit	2011	Europe
-3	SKT	2013	Corée
 \.
 
 
@@ -105,11 +104,11 @@ COPY equipes (id, nom, annee, region) FROM stdin;
 -- Name: equipes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('equipes_id_seq', 1, false);
+SELECT pg_catalog.setval('equipes_id_seq', 2, true);
 
 
 --
--- TOC entry 2004 (class 2606 OID 24598)
+-- TOC entry 2004 (class 2606 OID 24609)
 -- Name: equipes equipes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -117,7 +116,7 @@ ALTER TABLE ONLY equipes
     ADD CONSTRAINT equipes_pkey PRIMARY KEY (id);
 
 
--- Completed on 2018-09-12 19:19:23
+-- Completed on 2018-09-12 23:40:03
 
 --
 -- PostgreSQL database dump complete

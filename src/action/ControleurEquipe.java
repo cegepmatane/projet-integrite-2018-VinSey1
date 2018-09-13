@@ -52,8 +52,8 @@ public class ControleurEquipe {
 	
 	public void notifierEnregistrerEquipe() {
 		System.out.println("ControleurEquipe.notifierEnregistreEquipe()");
-		Equipe mouton = this.navigateur.getVueAjouterEquipe().demanderEquipe();
-		//this.moutonDAO.ajouterMouton(mouton);
+		Equipe equipe = this.navigateur.getVueAjouterEquipe().demanderEquipe();
+		this.equipeDAO.ajouterEquipe(equipe);
 		this.navigateur.naviguerVersVueAjouterEquipe();
 	}
 }
