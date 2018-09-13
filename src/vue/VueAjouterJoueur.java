@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import modele.Equipe;
 import modele.Joueur;
 
-public class VueAjouterJoueur extends Application {
+public class VueAjouterJoueur extends Scene {
 
 	protected TextField valeurNom;
 	protected TextField valeurNaissance;
@@ -26,9 +26,10 @@ public class VueAjouterJoueur extends Application {
 	private ControleurJoueur controleurJoueur = null;
 	protected Button actionEnregistrerJoueur = null;
 
-	@Override
-	public void start(Stage stade) throws Exception {
-		VBox panneau = new VBox();
+	public VueAjouterJoueur() {
+		
+		super(new VBox(), 400, 400);
+		VBox panneau = (VBox) this.getRoot();
 
 		GridPane grilleJoueur = new GridPane();
 		
@@ -38,7 +39,7 @@ public class VueAjouterJoueur extends Application {
  			@Override
 			public void handle(ActionEvent arg0) {
 				
-				//controleurJoueur.notifierEnregistrerNouvelleEquipe();
+				controleurJoueur.notifierEnregistrerNouveauJoueur();
 				
 			}});
 		
@@ -57,11 +58,9 @@ public class VueAjouterJoueur extends Application {
 		panneau.getChildren().add(new Label("Ajouter un joueur"));
 		panneau.getChildren().add(grilleJoueur);
 		panneau.getChildren().add(this.actionEnregistrerJoueur);
-		stade.setScene(new Scene(panneau, 400, 400));
-		stade.show();
 	}
 	
-	public void setControleurEquipe(ControleurJoueur controleurJoueur) {
+	public void setControleurJoueur(ControleurJoueur controleurJoueur) {
 		this.controleurJoueur = controleurJoueur;
 	}
 	

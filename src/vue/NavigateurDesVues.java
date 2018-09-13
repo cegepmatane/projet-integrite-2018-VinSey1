@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import action.ControleurEquipe;
+import action.ControleurJoueur;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import modele.Equipe;
@@ -15,7 +16,9 @@ import modele.Equipe;
 	private VueListeEquipe vueListeEquipe = null;
 	private VueEquipe vueEquipe = null;
 	private ControleurEquipe controleurEquipe = null;
+	private ControleurJoueur controleurJoueur = null;
 	private VueAjouterJoueur vueAjouterJoueur = null;
+	private VueEditerJoueur vueEditerJoueur = null;
 	
 	public NavigateurDesVues() 
 	{
@@ -25,6 +28,7 @@ import modele.Equipe;
 		this.vueEquipe = new VueEquipe();
 		this.vueEditerEquipe = new VueEditerEquipe();
 		this.vueAjouterJoueur = new VueAjouterJoueur();
+		this.vueEditerJoueur = new VueEditerJoueur();
 
 	}
 	
@@ -34,11 +38,24 @@ import modele.Equipe;
 		this.stade.setScene(null);
 		this.stade.show();
 		this.controleurEquipe = ControleurEquipe.getInstance();
+		this.controleurJoueur = ControleurJoueur.getInstance();
 		this.controleurEquipe.activerVues(this);
+		this.controleurJoueur.activerVues(this);
+		this.vueAjouterJoueur.setControleurJoueur(controleurJoueur);
+		this.vueEditerJoueur.setControleurJoueur(controleurJoueur);
 		this.vueAjouterEquipe.setControleurEquipe(controleurEquipe);
 		this.vueListeEquipe.setControleurEquipe(controleurEquipe);
 		this.vueEquipe.setControleurEquipe(controleurEquipe);
+		this.vueEditerEquipe.setControleurJoueur(controleurJoueur);
 		this.vueEditerEquipe.setControleurEquipe(controleurEquipe);
+	}
+	
+	public VueEditerJoueur getVueEditerJoueur() {
+		return vueEditerJoueur;
+	}
+	
+	public VueAjouterJoueur getVueAjouterJoueur() {
+		return vueAjouterJoueur;
 	}
 
 	public VueEditerEquipe getVueEditerEquipe() {
@@ -64,6 +81,16 @@ import modele.Equipe;
 	
 	public void naviguerVersVueListeEquipe() {
 		stade.setScene(this.vueListeEquipe);
+		stade.show();
+	}
+	
+	public void naviguerVersVueAjouterJoueur() {
+		stade.setScene(this.vueAjouterJoueur);
+		stade.show();
+	}
+	
+	public void naviguerVersVueEditerJoueur() {
+		stade.setScene(this.vueEditerJoueur);
 		stade.show();
 	}
 	

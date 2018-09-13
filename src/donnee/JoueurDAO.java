@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import modele.Equipe;
 import modele.Joueur;
 
 public class JoueurDAO {
@@ -44,6 +45,7 @@ public class JoueurDAO {
 				String nationalite = curseurListeJoueurs.getString("nationalite");
 				
 				Joueur joueur = new Joueur(nom, nationalite, naissance);
+				joueur.setId(id);
 				listeJoueurs.add(joueur);
 			}
 		} catch (SQLException e) {
@@ -51,6 +53,26 @@ public class JoueurDAO {
 		}
 		
 		return listeJoueurs;
+	}
+	
+	public Joueur rapporterJoueur(int idJoueur) {
+		Statement requeteJoueur;
+		try {
+			requeteJoueur = connection.createStatement();
+			String SQL_RAPPORTER_JOUEUR = "SELECT * FROM joueur WHERE id = "+idJoueur;
+			ResultSet curseurJoueur = requeteJoueur.executeQuery(SQL_RAPPORTER_JOUEUR);
+			curseurJoueur.next();
+			int id = curseurJoueur.getInt("id");
+			String nom = curseurJoueur.getString("nom");
+			String naissance = curseurJoueur.getString("naissance");
+			String nationalite = curseurJoueur.getString("nationalite");
+			Joueur joueur = new Joueur(nom, nationalite, naissance);
+			joueur.setId(id);
+			return joueur;			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
 	}
 
 }

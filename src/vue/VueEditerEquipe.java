@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import action.ControleurEquipe;
+import action.ControleurJoueur;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -22,6 +23,7 @@ public class VueEditerEquipe  extends Scene {
 	protected TextField valeurRegion;
 	
 	private ControleurEquipe controleurEquipe = null;
+	private ControleurJoueur controleurJoueur = null;
 	protected Button actionEnregistrerEquipe = null;
 	private GridPane grilleListeJoueurs = new GridPane();
 	
@@ -65,12 +67,21 @@ public class VueEditerEquipe  extends Scene {
 	public void afficherListeJoueurs(List<Joueur> listeJoueurs){
 		int iterateur = 0;
 		for(Joueur joueurActuel : listeJoueurs) {
+			Button actionEditerJoueur = new Button("Éditer");
+			
+			actionEditerJoueur.setOnAction(new EventHandler<ActionEvent>() {
+	 			@Override
+				public void handle(ActionEvent arg0) {
+					
+					controleurJoueur.notifierNaviguerEditerJoueur(joueurActuel.getId());
+					
+				}});
+			iterateur++;
 			this.grilleListeJoueurs.add(new Label(joueurActuel.getNom()+""), 0 ,iterateur);
 			this.grilleListeJoueurs.add(new Label(joueurActuel.getNaissance()+""), 1 ,iterateur);
 			this.grilleListeJoueurs.add(new Label(joueurActuel.getNationalite()+""),2 ,iterateur);
-			this.grilleListeJoueurs.add(new Button("Éditer"), 3, iterateur);
+			this.grilleListeJoueurs.add(actionEditerJoueur, 3, iterateur);
 			this.grilleListeJoueurs.add(new Button("Effacer"), 4, iterateur);
-			iterateur++;
 		}
 	}
 	
@@ -83,6 +94,10 @@ public class VueEditerEquipe  extends Scene {
 	
 	public void setControleurEquipe(ControleurEquipe controleur) {
 		this.controleurEquipe = controleur;
+	}
+	
+	public void setControleurJoueur(ControleurJoueur controleurJoueur) {
+		this.controleurJoueur = controleurJoueur;
 	}
 	
 	public void afficherEquipe(Equipe equipe) {
