@@ -15,6 +15,7 @@ import modele.Equipe;
 	private VueListeEquipe vueListeEquipe = null;
 	private VueEquipe vueEquipe = null;
 	private ControleurEquipe controleurEquipe = null;
+	private VueAjouterJoueur vueAjouterJoueur = null;
 	
 	public NavigateurDesVues() 
 	{
@@ -23,6 +24,7 @@ import modele.Equipe;
 		this.vueListeEquipe = new VueListeEquipe();
 		this.vueEquipe = new VueEquipe();
 		this.vueEditerEquipe = new VueEditerEquipe();
+		this.vueAjouterJoueur = new VueAjouterJoueur();
 
 	}
 	
