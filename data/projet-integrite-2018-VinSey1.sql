@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.4
 -- Dumped by pg_dump version 9.6.4
 
--- Started on 2018-09-13 16:27:51
+-- Started on 2018-09-13 17:45:41
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -141,15 +141,16 @@ ALTER TABLE ONLY joueur ALTER COLUMN id SET DEFAULT nextval('joueur_id_seq'::reg
 --
 
 COPY equipes (id, nom, annee, region) FROM stdin;
-5			
 6			
 7			
 8			
 3	SKT	2009	Corée
 9	Test	Oui	OUAIS
 4			
-2	Gambit	2011	Europe
 1	Fnatic	2011	Europe
+5			
+10	Oui	Non	test
+2	Gambit	2011	Europe
 \.
 
 
@@ -159,7 +160,7 @@ COPY equipes (id, nom, annee, region) FROM stdin;
 -- Name: equipes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('equipes_id_seq', 9, true);
+SELECT pg_catalog.setval('equipes_id_seq', 10, true);
 
 
 --
@@ -219,7 +220,7 @@ ALTER TABLE ONLY joueur
     ADD CONSTRAINT one_equipe_to_many_joueurs FOREIGN KEY (equipe) REFERENCES equipes(id);
 
 
--- Completed on 2018-09-13 16:27:51
+-- Completed on 2018-09-13 17:45:42
 
 --
 -- PostgreSQL database dump complete
