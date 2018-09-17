@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import action.ControleurEquipe;
-import action.ControleurJoueur;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,29 +17,25 @@ import javafx.stage.Stage;
 import modele.Equipe;
 import modele.Joueur;
 
-public class VueEditerJoueur  extends Scene {
+public class VueEditerJoueur  extends Application {
 	
 	protected TextField valeurNom;
 	protected TextField valeurNaissance;
 	protected TextField valeurNationalite;
 	
-	private ControleurJoueur controleurJoueur = null;
 	protected Button actionEnregistrerJoueur = null;
 		
-	public VueEditerJoueur() {
-		
-		super(new VBox(), 400, 400);
-		VBox panneau = (VBox) this.getRoot();
-
-		GridPane grilleJoueur = new GridPane();
+	@Override
+	public void start(Stage stade) throws Exception {
+		VBox panneau = new VBox();
+ 		GridPane grilleJoueur = new GridPane();
+ 		
 		this.actionEnregistrerJoueur = new Button("Enregistrer");
 		
 		this.actionEnregistrerJoueur.setOnAction(new EventHandler<ActionEvent>() {
  			@Override
 			public void handle(ActionEvent arg0) {
-				
- 				controleurJoueur.notifierEnregistrerJoueur();
-				
+ 				System.out.println("VueEditerJoueur.actionEnregistrerJoueur()");
 			}});
 		
 		valeurNom = new TextField();
@@ -58,22 +53,8 @@ public class VueEditerJoueur  extends Scene {
 		panneau.getChildren().add(new Label("Editer un joueur"));
 		panneau.getChildren().add(grilleJoueur);
 		panneau.getChildren().add(this.actionEnregistrerJoueur);
-	}
-	
-	public Joueur demanderJoueur()
-	{
-		Joueur joueur = new Joueur(this.valeurNom.getText(), this.valeurNationalite.getText(), this.valeurNaissance.getText());
-		return joueur;
-	}
-	
-	public void setControleurJoueur(ControleurJoueur controleur) {
-		this.controleurJoueur = controleur;
-	}
-	
-	public void afficherJoueur(Joueur joueur) {
-		this.valeurNom.setText(joueur.getNom());
-		this.valeurNaissance.setText(joueur.getNaissance());
-		this.valeurNationalite.setText(joueur.getNationalite());
-	}
-	
+		
+		stade.setScene(new Scene(panneau, 400, 400));
+		stade.show();
+	}	
  }

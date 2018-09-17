@@ -2,12 +2,11 @@ package vue;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import action.ControleurEquipe;
-import action.ControleurJoueur;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import modele.Equipe;
+
  public class NavigateurDesVues extends Application{
 	
 	private Stage stade;
@@ -16,7 +15,6 @@ import modele.Equipe;
 	private VueListeEquipe vueListeEquipe = null;
 	private VueEquipe vueEquipe = null;
 	private ControleurEquipe controleurEquipe = null;
-	private ControleurJoueur controleurJoueur = null;
 	private VueAjouterJoueur vueAjouterJoueur = null;
 	private VueEditerJoueur vueEditerJoueur = null;
 	
@@ -38,15 +36,10 @@ import modele.Equipe;
 		this.stade.setScene(null);
 		this.stade.show();
 		this.controleurEquipe = ControleurEquipe.getInstance();
-		this.controleurJoueur = ControleurJoueur.getInstance();
 		this.controleurEquipe.activerVues(this);
-		this.controleurJoueur.activerVues(this);
-		this.vueAjouterJoueur.setControleurJoueur(controleurJoueur);
-		this.vueEditerJoueur.setControleurJoueur(controleurJoueur);
 		this.vueAjouterEquipe.setControleurEquipe(controleurEquipe);
 		this.vueListeEquipe.setControleurEquipe(controleurEquipe);
 		this.vueEquipe.setControleurEquipe(controleurEquipe);
-		this.vueEditerEquipe.setControleurJoueur(controleurJoueur);
 		this.vueEditerEquipe.setControleurEquipe(controleurEquipe);
 	}
 	
@@ -81,16 +74,6 @@ import modele.Equipe;
 	
 	public void naviguerVersVueListeEquipe() {
 		stade.setScene(this.vueListeEquipe);
-		stade.show();
-	}
-	
-	public void naviguerVersVueAjouterJoueur() {
-		stade.setScene(this.vueAjouterJoueur);
-		stade.show();
-	}
-	
-	public void naviguerVersVueEditerJoueur() {
-		stade.setScene(this.vueEditerJoueur);
 		stade.show();
 	}
 	

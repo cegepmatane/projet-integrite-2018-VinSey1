@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import donnee.EquipeDAO;
-import donnee.JoueurDAO;
 import modele.Equipe;
 import modele.Joueur;
 import vue.NavigateurDesVues;
@@ -22,9 +21,7 @@ public class ControleurEquipe {
 	private VueListeEquipe vueListeEquipe = null;
 	private VueEquipe vueEquipe = null;
 	protected EquipeDAO equipeDAO = null;
-	private VueEditerEquipe vueEditerEquipe = null;
-	private JoueurDAO joueurDAO = null;
-	
+	private VueEditerEquipe vueEditerEquipe = null;	
 	
 	public static ControleurEquipe getInstance()
 	{
@@ -34,9 +31,7 @@ public class ControleurEquipe {
 	
 	private ControleurEquipe() {
 		System.out.println("Initialisation du contrôleur");
-		this.equipeDAO = new EquipeDAO();
-		this.joueurDAO = new JoueurDAO();
-	}
+		this.equipeDAO = new EquipeDAO();	}
 	
 	public void activerVues(NavigateurDesVues navigateur)
 	{
@@ -86,6 +81,6 @@ public class ControleurEquipe {
 	{
 		this.vueEditerEquipe.afficherEquipe(this.equipeDAO.rapporterEquipe(idEquipe));
 		this.navigateur.naviguerVersVueEditerEquipe();
-		this.vueEditerEquipe.afficherListeJoueurs(this.joueurDAO.listerJoueurs(idEquipe));
+		this.vueEditerEquipe.afficherListeJoueurs();
 	}
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import action.ControleurEquipe;
-import action.ControleurJoueur;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -23,7 +22,6 @@ public class VueEditerEquipe  extends Scene {
 	protected TextField valeurRegion;
 	
 	private ControleurEquipe controleurEquipe = null;
-	private ControleurJoueur controleurJoueur = null;
 	protected Button actionEnregistrerEquipe = null;
 	private GridPane grilleListeJoueurs = new GridPane();
 	
@@ -64,7 +62,20 @@ public class VueEditerEquipe  extends Scene {
 		
 	}
 	
-	public void afficherListeJoueurs(List<Joueur> listeJoueurs){
+	public void afficherListeJoueurs(){
+		List<Joueur> listeJoueurs = new ArrayList<Joueur>();
+		Joueur joueur;
+		joueur = new Joueur("Valentin", "France", "04/11/1994");
+		listeJoueurs.add(joueur);
+		joueur = new Joueur("Vincent", "France", "05/11/1998");
+		listeJoueurs.add(joueur);		
+		joueur = new Joueur("Michaël", "Canada", "?/?/?");
+		listeJoueurs.add(joueur);		
+		joueur = new Joueur("Eliott", "France", "?/?/?");
+		listeJoueurs.add(joueur);		
+		joueur = new Joueur("Youssef", "France", "?/?/?");
+		listeJoueurs.add(joueur);
+		
 		int iterateur = 0;
 		for(Joueur joueurActuel : listeJoueurs) {
 			Button actionEditerJoueur = new Button("Éditer");
@@ -72,18 +83,14 @@ public class VueEditerEquipe  extends Scene {
 			actionEditerJoueur.setOnAction(new EventHandler<ActionEvent>() {
 	 			@Override
 				public void handle(ActionEvent arg0) {
-					
-					controleurJoueur.notifierNaviguerEditerJoueur(joueurActuel.getId());
-					
+	 				System.out.println("VueEditerEquipe.actionEditerJoueur()");			
 				}});
 			Button actionSupprimerJoueur = new Button("Supprimer");
 			
 			actionSupprimerJoueur.setOnAction(new EventHandler<ActionEvent>() {
 	 			@Override
 				public void handle(ActionEvent arg0) {
-					
-					controleurJoueur.notifierSupprimerJoueur(joueurActuel.getId());
-					
+	 				System.out.println("VueEditerEquipe.actionSupprimerJoueur()");
 				}});
 			this.grilleListeJoueurs.add(new Label(joueurActuel.getNom()+""), 0 ,iterateur);
 			this.grilleListeJoueurs.add(new Label(joueurActuel.getNaissance()+""), 1 ,iterateur);
@@ -96,9 +103,7 @@ public class VueEditerEquipe  extends Scene {
 		actionAjouterJoueur.setOnAction(new EventHandler<ActionEvent>() {
  			@Override
 			public void handle(ActionEvent arg0) {
-				
-				controleurJoueur.notifierNaviguerAjouterJoueur();
-				
+				System.out.println("VueEditerEquipe.actionAjouterJoueur()");
 			}});
 		
 		this.grilleListeJoueurs.add(actionAjouterJoueur, 0, iterateur+1);
@@ -114,10 +119,6 @@ public class VueEditerEquipe  extends Scene {
 	
 	public void setControleurEquipe(ControleurEquipe controleur) {
 		this.controleurEquipe = controleur;
-	}
-	
-	public void setControleurJoueur(ControleurJoueur controleurJoueur) {
-		this.controleurJoueur = controleurJoueur;
 	}
 	
 	public void afficherEquipe(Equipe equipe) {
