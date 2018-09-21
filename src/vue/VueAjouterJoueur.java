@@ -3,6 +3,7 @@ package vue;
 
 
 import action.ControleurEquipe;
+import action.ControleurJoueur;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,24 +18,29 @@ import javafx.stage.Stage;
 import modele.Equipe;
 import modele.Joueur;
 
-public class VueAjouterJoueur extends Application {
+public class VueAjouterJoueur extends Scene {
 
 	protected TextField valeurNom;
 	protected TextField valeurNaissance;
 	protected TextField valeurNationalite;
+	private ControleurJoueur controleurJoueur = null;
 	protected Button actionEnregistrerJoueur = null;
 
-	@Override
-	public void start(Stage stade) throws Exception {
-		VBox panneau = new VBox();
- 		GridPane grilleJoueur = new GridPane();
+	public VueAjouterJoueur() {
+		
+		super(new VBox(), 400, 400);
+		VBox panneau = (VBox) this.getRoot();
+
+		GridPane grilleJoueur = new GridPane();
 		
 		this.actionEnregistrerJoueur = new Button("Enregistrer");
 		
 		this.actionEnregistrerJoueur.setOnAction(new EventHandler<ActionEvent>() {
  			@Override
 			public void handle(ActionEvent arg0) {
- 				System.out.println("VueAjouterJoueur.actionEnregistrerJoueur()");
+				
+				controleurJoueur.notifierEnregistrerNouveauJoueur();
+				
 			}});
 		
 		valeurNom = new TextField();
@@ -52,8 +58,15 @@ public class VueAjouterJoueur extends Application {
 		panneau.getChildren().add(new Label("Ajouter un joueur"));
 		panneau.getChildren().add(grilleJoueur);
 		panneau.getChildren().add(this.actionEnregistrerJoueur);
-		
-		stade.setScene(new Scene(panneau, 400, 400));
-		stade.show();
+	}
+	
+	public void setControleurJoueur(ControleurJoueur controleurJoueur) {
+		this.controleurJoueur = controleurJoueur;
+	}
+	
+	public Joueur demanderJoueur()
+	{
+		Joueur joueur = new Joueur(this.valeurNom.getText(), this.valeurNationalite.getText(), this.valeurNaissance.getText());
+		return joueur;
 	}
 }
