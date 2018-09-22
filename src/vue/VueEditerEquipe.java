@@ -127,4 +127,8 @@ public class VueEditerEquipe  extends Scene {
 		this.valeurRegion.setText(equipe.getRegion());
 	}
 	
+	public int getIdEquipe() {
+		return idEquipe;
+	}
+	
  }

@@ -88,4 +88,16 @@ public class ControleurEquipe {
 		this.navigateur.naviguerVersVueEditerEquipe();
 		this.vueEditerEquipe.afficherListeJoueurs(this.joueurDAO.listerJoueurs(idEquipe));
 	}
+	
+	public EquipeDAO getEquipeDAO() {
+		return equipeDAO;
+	}
+	
+	public JoueurDAO getJoueurDAO() {
+		return joueurDAO;
+	}
+	
+	public VueEditerEquipe getVueEditerEquipe() {
+		return this.vueEditerEquipe;
+	}
 }

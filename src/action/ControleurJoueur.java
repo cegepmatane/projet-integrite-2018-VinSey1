@@ -3,6 +3,7 @@ package action;
 import donnee.EquipeDAO;
 import donnee.JoueurDAO;
 import modele.Equipe;
+import modele.Joueur;
 import vue.NavigateurDesVues;
 import vue.VueAjouterEquipe;
 import vue.VueAjouterJoueur;
@@ -19,15 +20,19 @@ public class ControleurJoueur {
 	private VueAjouterJoueur vueAjouterJoueur = null;
 	private VueEditerJoueur vueEditerJoueur = null;
 	private JoueurDAO joueurDAO = null;
+	private EquipeDAO equipeDAO = null;
+	private ControleurEquipe controleurEquipe = null;
 	
-	public static ControleurJoueur getInstance()
+	public static ControleurJoueur getInstance(ControleurEquipe controleurEquipe)
 	{
-		if(null == instance) instance = new ControleurJoueur();
+		if(null == instance) instance = new ControleurJoueur(controleurEquipe);
 		return instance;
 	}
 	
-	private ControleurJoueur() {
-		this.joueurDAO = new JoueurDAO();
+	private ControleurJoueur(ControleurEquipe controleurEquipe) {
+		this.controleurEquipe = controleurEquipe;
+		this.joueurDAO = controleurEquipe.getJoueurDAO();
+		this.equipeDAO = controleurEquipe.getEquipeDAO();
 	}
 	
 	public void activerVues(NavigateurDesVues navigateur)
@@ -44,6 +49,9 @@ public class ControleurJoueur {
 	
 	public void notifierEnregistrerNouveauJoueur() {
 		System.out.println("ControleurJoueur.notifierEnregistrerNouveauJoueur()");
+		Joueur joueur = this.navigateur.getVueAjouterJoueur().demanderJoueur();
+		this.joueurDAO.ajouterJoueur(joueur, this.navigateur.getVueEditerEquipe().getIdEquipe());
+		this.controleurEquipe.getVueEditerEquipe().afficherListeJoueurs(this.joueurDAO.listerJoueurs(this.navigateur.getVueEditerEquipe().getIdEquipe()));
 		this.navigateur.naviguerVersVueEditerEquipe();
 	}
 	

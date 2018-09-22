@@ -38,7 +38,7 @@ import modele.Equipe;
 		this.stade.setScene(null);
 		this.stade.show();
 		this.controleurEquipe = ControleurEquipe.getInstance();
-		this.controleurJoueur = ControleurJoueur.getInstance();
+		this.controleurJoueur = ControleurJoueur.getInstance(controleurEquipe);
 		this.controleurEquipe.activerVues(this);
 		this.controleurJoueur.activerVues(this);
 		this.vueAjouterJoueur.setControleurJoueur(controleurJoueur);

@@ -75,4 +75,13 @@ public class JoueurDAO {
 		return null;
 	}
 
+	public void ajouterJoueur(Joueur joueur, int idEquipe) {
+		try {
+			Statement requeteAjouterJoueur = connection.createStatement();
+			requeteAjouterJoueur.execute("INSERT into joueur(nom, nationalite, naissance, equipe) VALUES('"+joueur.getNom()+"','"+joueur.getNationalite()+"','"+joueur.getNaissance()+"','"+idEquipe+"')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+
 }
