@@ -65,6 +65,7 @@ public class VueEditerEquipe  extends Scene {
 	}
 	
 	public void afficherListeJoueurs(List<Joueur> listeJoueurs){
+		this.grilleListeJoueurs.getChildren().clear();
 		int iterateur = 0;
 		for(Joueur joueurActuel : listeJoueurs) {
 			Button actionEditerJoueur = new Button("Éditer");
