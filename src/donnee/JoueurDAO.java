@@ -83,5 +83,14 @@ public class JoueurDAO {
 			e.printStackTrace();
 		}		
 	}
+	
+	public void modifierJoueur(Joueur joueur) {
+		try {
+			Statement requeteModifierJoueur = connection.createStatement();
+			requeteModifierJoueur.execute("UPDATE joueur SET nom = '"+joueur.getNom()+"', nationalite = '"+joueur.getNationalite()+"', naissance = '"+joueur.getNaissance()+"' WHERE id = "+joueur.getId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

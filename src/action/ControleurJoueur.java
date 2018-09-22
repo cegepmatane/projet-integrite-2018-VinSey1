@@ -44,6 +44,9 @@ public class ControleurJoueur {
 	
 	public void notifierEnregistrerJoueur() {
 		System.out.println("ControleurJoueur.notifierEnregistrerJoueur()");
+		Joueur joueur = this.navigateur.getVueEditerJoueur().demanderJoueur();
+		this.joueurDAO.modifierJoueur(joueur);
+		this.controleurEquipe.getVueEditerEquipe().afficherListeJoueurs(this.joueurDAO.listerJoueurs(this.navigateur.getVueEditerEquipe().getIdEquipe()));
 		this.navigateur.naviguerVersVueEditerEquipe();
 	}
 	
