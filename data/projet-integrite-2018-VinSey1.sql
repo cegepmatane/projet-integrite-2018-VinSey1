@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.4
 -- Dumped by pg_dump version 9.6.4
 
--- Started on 2018-09-13 17:45:41
+-- Started on 2018-09-28 17:31:30
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -25,7 +25,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2144 (class 0 OID 0)
+-- TOC entry 2146 (class 0 OID 0)
 -- Dependencies: 1
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
@@ -34,6 +34,36 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 190 (class 1255 OID 24727)
+-- Name: nettoyageequipes(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION nettoyageequipes() RETURNS void
+    LANGUAGE sql
+    AS $$
+
+	TRUNCATE TABLE equipes RESTART IDENTITY CASCADE;
+
+$$;
+
+
+ALTER FUNCTION public.nettoyageequipes() OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1255 OID 24728)
+-- Name: nettoyagejoueur(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION nettoyagejoueur() RETURNS void
+    LANGUAGE sql
+    AS $$
+	TRUNCATE TABLE joueur RESTART IDENTITY;
+$$;
+
+
+ALTER FUNCTION public.nettoyagejoueur() OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -70,7 +100,7 @@ CREATE SEQUENCE equipes_id_seq
 ALTER TABLE equipes_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2145 (class 0 OID 0)
+-- TOC entry 2147 (class 0 OID 0)
 -- Dependencies: 185
 -- Name: equipes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -110,7 +140,7 @@ CREATE SEQUENCE joueur_id_seq
 ALTER TABLE joueur_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2146 (class 0 OID 0)
+-- TOC entry 2148 (class 0 OID 0)
 -- Dependencies: 187
 -- Name: joueur_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -119,7 +149,7 @@ ALTER SEQUENCE joueur_id_seq OWNED BY joueur.id;
 
 
 --
--- TOC entry 2009 (class 2604 OID 24604)
+-- TOC entry 2011 (class 2604 OID 24604)
 -- Name: equipes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -127,7 +157,7 @@ ALTER TABLE ONLY equipes ALTER COLUMN id SET DEFAULT nextval('equipes_id_seq'::r
 
 
 --
--- TOC entry 2010 (class 2604 OID 24615)
+-- TOC entry 2012 (class 2604 OID 24615)
 -- Name: joueur id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -135,58 +165,59 @@ ALTER TABLE ONLY joueur ALTER COLUMN id SET DEFAULT nextval('joueur_id_seq'::reg
 
 
 --
--- TOC entry 2135 (class 0 OID 24601)
+-- TOC entry 2137 (class 0 OID 24601)
 -- Dependencies: 186
 -- Data for Name: equipes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY equipes (id, nom, annee, region) FROM stdin;
-6			
-7			
-8			
+2	Gambit	2009	Europe
+1	Fnatic	2009	Europe
 3	SKT	2009	Corée
-9	Test	Oui	OUAIS
-4			
-1	Fnatic	2011	Europe
-5			
-10	Oui	Non	test
-2	Gambit	2011	Europe
 \.
 
 
 --
--- TOC entry 2147 (class 0 OID 0)
+-- TOC entry 2149 (class 0 OID 0)
 -- Dependencies: 185
 -- Name: equipes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('equipes_id_seq', 10, true);
+SELECT pg_catalog.setval('equipes_id_seq', 3, true);
 
 
 --
--- TOC entry 2137 (class 0 OID 24612)
+-- TOC entry 2139 (class 0 OID 24612)
 -- Dependencies: 188
 -- Data for Name: joueur; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY joueur (id, nom, nationalite, naissance, equipe) FROM stdin;
-2	Vincent	France	05/11/1998\n	1
-1	Valentin	France	04/11/1994	1
-3	Youssef	France	?/?/1998	2
+2	Eliott	France	05/11/1998	1
+3	Valentin	France	05/11/1998	1
+4	Youssef	France	05/11/1998	2
+5	Michaël	Canada	05/11/1998	2
+6	John	Russie	05/11/1998	2
+7	Mike	Corée	05/11/1998	3
+8	Shen	Corée	05/11/1998	3
+9	Neo	Corée	05/11/1998	3
+1	Vincent	France	05/11/1998	1
+14	Faker	Corée	11/09/1995	3
+15	Youssef2	Corée	ouais	2
 \.
 
 
 --
--- TOC entry 2148 (class 0 OID 0)
+-- TOC entry 2150 (class 0 OID 0)
 -- Dependencies: 187
 -- Name: joueur_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('joueur_id_seq', 1, false);
+SELECT pg_catalog.setval('joueur_id_seq', 15, true);
 
 
 --
--- TOC entry 2012 (class 2606 OID 24609)
+-- TOC entry 2014 (class 2606 OID 24609)
 -- Name: equipes equipes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -195,7 +226,7 @@ ALTER TABLE ONLY equipes
 
 
 --
--- TOC entry 2015 (class 2606 OID 24620)
+-- TOC entry 2017 (class 2606 OID 24620)
 -- Name: joueur joueur_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -204,7 +235,7 @@ ALTER TABLE ONLY joueur
 
 
 --
--- TOC entry 2013 (class 1259 OID 24626)
+-- TOC entry 2015 (class 1259 OID 24626)
 -- Name: fki_one_equipe_to_many_joueurs; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -212,7 +243,7 @@ CREATE INDEX fki_one_equipe_to_many_joueurs ON joueur USING btree (equipe);
 
 
 --
--- TOC entry 2016 (class 2606 OID 24621)
+-- TOC entry 2018 (class 2606 OID 24621)
 -- Name: joueur one_equipe_to_many_joueurs; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -220,7 +251,7 @@ ALTER TABLE ONLY joueur
     ADD CONSTRAINT one_equipe_to_many_joueurs FOREIGN KEY (equipe) REFERENCES equipes(id);
 
 
--- Completed on 2018-09-13 17:45:42
+-- Completed on 2018-09-28 17:31:31
 
 --
 -- PostgreSQL database dump complete
