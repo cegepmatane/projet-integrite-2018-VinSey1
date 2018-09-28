@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.4
 -- Dumped by pg_dump version 9.6.4
 
--- Started on 2018-09-28 19:40:40
+-- Started on 2018-09-28 19:44:34
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -25,7 +25,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2197 (class 0 OID 0)
+-- TOC entry 2198 (class 0 OID 0)
 -- Dependencies: 1
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
@@ -34,6 +34,46 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 212 (class 1255 OID 24871)
+-- Name: enregistrer(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION enregistrer() RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+
+DECLARE
+	equipeCourante RECORD;
+    nombre text;
+    moyenne text;
+    checksum text;
+BEGIN
+	FOR equipeCourante IN
+		SELECT * FROM equipe
+    LOOP
+    	moyenne := AVG(naisance) FROM joueur WHERE equipe = equipeCourante.id;
+        nombre := COUNT(*) FROM joueur WHERE equipe = equipeCourante.id;
+        checksum := sum(crc32(nationalite)) FROM joueur WHERE equipe = equipeCourante.id;
+    	INSERT INTO surveillanceJoueurParEquipe(moment, nombreJoueurs, moyenneNaissance, checksumNationalite) VALUES(NOW(), nombre, moyenne, checksum);
+    END LOOP;
+    
+    moyenne := AVG(annee) FROM equipes;
+    nombre := COUNT(*) FROM equipes;
+    checksum := sum(crc32(region)) FROM equipes;
+    INSERT INTO surveillanceEquipe(moment, nombreEquipes, moyenneAnnee, checksumRegion) VALUES(NOW(), nombre, moyenne, checksum);
+                                                                                               
+	moyenne := AVG(naissance) FROM joueurs;
+    nombre := COUNT(*) FROM joueurs;
+    checksum := sum(crc32(nationalite)) FROM joueurs;
+    INSERT INTO surveillanceJoueur(moment, nombreJoueurs, moyenneNaissance, checksumNationalite) VALUES(NOW(), nombre, moyenne, checksum);
+END
+
+$$;
+
+
+ALTER FUNCTION public.enregistrer() OWNER TO postgres;
 
 --
 -- TOC entry 211 (class 1255 OID 24811)
@@ -143,7 +183,7 @@ CREATE SEQUENCE equipes_id_seq
 ALTER TABLE equipes_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2198 (class 0 OID 0)
+-- TOC entry 2199 (class 0 OID 0)
 -- Dependencies: 185
 -- Name: equipes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -183,7 +223,7 @@ CREATE SEQUENCE joueur_id_seq
 ALTER TABLE joueur_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2199 (class 0 OID 0)
+-- TOC entry 2200 (class 0 OID 0)
 -- Dependencies: 187
 -- Name: joueur_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -223,7 +263,7 @@ CREATE SEQUENCE journal_id_seq
 ALTER TABLE journal_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2200 (class 0 OID 0)
+-- TOC entry 2201 (class 0 OID 0)
 -- Dependencies: 189
 -- Name: journal_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -263,7 +303,7 @@ CREATE SEQUENCE "surveillanceEquipe_id_seq"
 ALTER TABLE "surveillanceEquipe_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 2201 (class 0 OID 0)
+-- TOC entry 2202 (class 0 OID 0)
 -- Dependencies: 195
 -- Name: surveillanceEquipe_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -319,7 +359,7 @@ CREATE SEQUENCE "surveillanceJoueurParEquipe_id_seq"
 ALTER TABLE "surveillanceJoueurParEquipe_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 2202 (class 0 OID 0)
+-- TOC entry 2203 (class 0 OID 0)
 -- Dependencies: 191
 -- Name: surveillanceJoueurParEquipe_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -343,7 +383,7 @@ CREATE SEQUENCE "surveillanceJoueur_id_seq"
 ALTER TABLE "surveillanceJoueur_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 2203 (class 0 OID 0)
+-- TOC entry 2204 (class 0 OID 0)
 -- Dependencies: 193
 -- Name: surveillanceJoueur_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -352,7 +392,7 @@ ALTER SEQUENCE "surveillanceJoueur_id_seq" OWNED BY "surveillanceJoueur".id;
 
 
 --
--- TOC entry 2039 (class 2604 OID 24604)
+-- TOC entry 2040 (class 2604 OID 24604)
 -- Name: equipes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -360,7 +400,7 @@ ALTER TABLE ONLY equipes ALTER COLUMN id SET DEFAULT nextval('equipes_id_seq'::r
 
 
 --
--- TOC entry 2040 (class 2604 OID 24615)
+-- TOC entry 2041 (class 2604 OID 24615)
 -- Name: joueur id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -368,7 +408,7 @@ ALTER TABLE ONLY joueur ALTER COLUMN id SET DEFAULT nextval('joueur_id_seq'::reg
 
 
 --
--- TOC entry 2041 (class 2604 OID 24803)
+-- TOC entry 2042 (class 2604 OID 24803)
 -- Name: journal id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -376,7 +416,7 @@ ALTER TABLE ONLY journal ALTER COLUMN id SET DEFAULT nextval('journal_id_seq'::r
 
 
 --
--- TOC entry 2044 (class 2604 OID 24861)
+-- TOC entry 2045 (class 2604 OID 24861)
 -- Name: surveillanceEquipe id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -384,7 +424,7 @@ ALTER TABLE ONLY "surveillanceEquipe" ALTER COLUMN id SET DEFAULT nextval('"surv
 
 
 --
--- TOC entry 2043 (class 2604 OID 24853)
+-- TOC entry 2044 (class 2604 OID 24853)
 -- Name: surveillanceJoueur id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -392,7 +432,7 @@ ALTER TABLE ONLY "surveillanceJoueur" ALTER COLUMN id SET DEFAULT nextval('"surv
 
 
 --
--- TOC entry 2042 (class 2604 OID 24820)
+-- TOC entry 2043 (class 2604 OID 24820)
 -- Name: surveillanceJoueurParEquipe id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -400,7 +440,7 @@ ALTER TABLE ONLY "surveillanceJoueurParEquipe" ALTER COLUMN id SET DEFAULT nextv
 
 
 --
--- TOC entry 2180 (class 0 OID 24601)
+-- TOC entry 2181 (class 0 OID 24601)
 -- Dependencies: 186
 -- Data for Name: equipes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -413,7 +453,7 @@ COPY equipes (id, nom, annee, region) FROM stdin;
 
 
 --
--- TOC entry 2204 (class 0 OID 0)
+-- TOC entry 2205 (class 0 OID 0)
 -- Dependencies: 185
 -- Name: equipes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -422,7 +462,7 @@ SELECT pg_catalog.setval('equipes_id_seq', 5, true);
 
 
 --
--- TOC entry 2182 (class 0 OID 24612)
+-- TOC entry 2183 (class 0 OID 24612)
 -- Dependencies: 188
 -- Data for Name: joueur; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -443,7 +483,7 @@ COPY joueur (id, nom, nationalite, naissance, equipe) FROM stdin;
 
 
 --
--- TOC entry 2205 (class 0 OID 0)
+-- TOC entry 2206 (class 0 OID 0)
 -- Dependencies: 187
 -- Name: joueur_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -452,7 +492,7 @@ SELECT pg_catalog.setval('joueur_id_seq', 15, true);
 
 
 --
--- TOC entry 2184 (class 0 OID 24800)
+-- TOC entry 2185 (class 0 OID 24800)
 -- Dependencies: 190
 -- Data for Name: journal; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -462,7 +502,7 @@ COPY journal (id, moment, operation, description, objet) FROM stdin;
 
 
 --
--- TOC entry 2206 (class 0 OID 0)
+-- TOC entry 2207 (class 0 OID 0)
 -- Dependencies: 189
 -- Name: journal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -471,7 +511,7 @@ SELECT pg_catalog.setval('journal_id_seq', 1, false);
 
 
 --
--- TOC entry 2190 (class 0 OID 24858)
+-- TOC entry 2191 (class 0 OID 24858)
 -- Dependencies: 196
 -- Data for Name: surveillanceEquipe; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -481,7 +521,7 @@ COPY "surveillanceEquipe" (id, moment, " nombreEquipes", "moyenneAnnee", "checks
 
 
 --
--- TOC entry 2207 (class 0 OID 0)
+-- TOC entry 2208 (class 0 OID 0)
 -- Dependencies: 195
 -- Name: surveillanceEquipe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -490,7 +530,7 @@ SELECT pg_catalog.setval('"surveillanceEquipe_id_seq"', 1, false);
 
 
 --
--- TOC entry 2188 (class 0 OID 24850)
+-- TOC entry 2189 (class 0 OID 24850)
 -- Dependencies: 194
 -- Data for Name: surveillanceJoueur; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -500,7 +540,7 @@ COPY "surveillanceJoueur" (id, moment, "nombreJoueurs", "moyenneNaissance", "che
 
 
 --
--- TOC entry 2186 (class 0 OID 24817)
+-- TOC entry 2187 (class 0 OID 24817)
 -- Dependencies: 192
 -- Data for Name: surveillanceJoueurParEquipe; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -510,7 +550,7 @@ COPY "surveillanceJoueurParEquipe" (id, moment, "nombreJoueurs", "moyenneNaissan
 
 
 --
--- TOC entry 2208 (class 0 OID 0)
+-- TOC entry 2209 (class 0 OID 0)
 -- Dependencies: 191
 -- Name: surveillanceJoueurParEquipe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -519,7 +559,7 @@ SELECT pg_catalog.setval('"surveillanceJoueurParEquipe_id_seq"', 1, false);
 
 
 --
--- TOC entry 2209 (class 0 OID 0)
+-- TOC entry 2210 (class 0 OID 0)
 -- Dependencies: 193
 -- Name: surveillanceJoueur_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -528,7 +568,7 @@ SELECT pg_catalog.setval('"surveillanceJoueur_id_seq"', 1, false);
 
 
 --
--- TOC entry 2046 (class 2606 OID 24609)
+-- TOC entry 2047 (class 2606 OID 24609)
 -- Name: equipes equipes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -537,7 +577,7 @@ ALTER TABLE ONLY equipes
 
 
 --
--- TOC entry 2049 (class 2606 OID 24620)
+-- TOC entry 2050 (class 2606 OID 24620)
 -- Name: joueur joueur_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -546,7 +586,7 @@ ALTER TABLE ONLY joueur
 
 
 --
--- TOC entry 2051 (class 2606 OID 24808)
+-- TOC entry 2052 (class 2606 OID 24808)
 -- Name: journal journal_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -555,7 +595,7 @@ ALTER TABLE ONLY journal
 
 
 --
--- TOC entry 2057 (class 2606 OID 24866)
+-- TOC entry 2058 (class 2606 OID 24866)
 -- Name: surveillanceEquipe surveillanceEquipe_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -564,7 +604,7 @@ ALTER TABLE ONLY "surveillanceEquipe"
 
 
 --
--- TOC entry 2053 (class 2606 OID 24825)
+-- TOC entry 2054 (class 2606 OID 24825)
 -- Name: surveillanceJoueurParEquipe surveillanceJoueurParEquipe_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -573,7 +613,7 @@ ALTER TABLE ONLY "surveillanceJoueurParEquipe"
 
 
 --
--- TOC entry 2055 (class 2606 OID 24855)
+-- TOC entry 2056 (class 2606 OID 24855)
 -- Name: surveillanceJoueur surveillanceJoueur_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -582,7 +622,7 @@ ALTER TABLE ONLY "surveillanceJoueur"
 
 
 --
--- TOC entry 2047 (class 1259 OID 24626)
+-- TOC entry 2048 (class 1259 OID 24626)
 -- Name: fki_one_equipe_to_many_joueurs; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -590,7 +630,7 @@ CREATE INDEX fki_one_equipe_to_many_joueurs ON joueur USING btree (equipe);
 
 
 --
--- TOC entry 2059 (class 2620 OID 24812)
+-- TOC entry 2060 (class 2620 OID 24812)
 -- Name: equipes evenementajouterequipe; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -598,7 +638,7 @@ CREATE TRIGGER evenementajouterequipe BEFORE INSERT ON equipes FOR EACH ROW EXEC
 
 
 --
--- TOC entry 2060 (class 2620 OID 24813)
+-- TOC entry 2061 (class 2620 OID 24813)
 -- Name: equipes evenementmodifierequipe; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -606,7 +646,7 @@ CREATE TRIGGER evenementmodifierequipe BEFORE UPDATE ON equipes FOR EACH ROW EXE
 
 
 --
--- TOC entry 2061 (class 2620 OID 24814)
+-- TOC entry 2062 (class 2620 OID 24814)
 -- Name: equipes evenementsupprimerequipe; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -614,7 +654,7 @@ CREATE TRIGGER evenementsupprimerequipe BEFORE DELETE ON equipes FOR EACH ROW EX
 
 
 --
--- TOC entry 2058 (class 2606 OID 24793)
+-- TOC entry 2059 (class 2606 OID 24793)
 -- Name: joueur one_equipe_to_many_joueurs; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -622,7 +662,7 @@ ALTER TABLE ONLY joueur
     ADD CONSTRAINT one_equipe_to_many_joueurs FOREIGN KEY (equipe) REFERENCES equipes(id) ON DELETE CASCADE;
 
 
--- Completed on 2018-09-28 19:40:40
+-- Completed on 2018-09-28 19:44:34
 
 --
 -- PostgreSQL database dump complete
