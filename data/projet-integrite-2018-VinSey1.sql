@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.4
 -- Dumped by pg_dump version 9.6.4
 
--- Started on 2018-09-28 17:31:30
+-- Started on 2018-09-28 18:07:17
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -243,15 +243,15 @@ CREATE INDEX fki_one_equipe_to_many_joueurs ON joueur USING btree (equipe);
 
 
 --
--- TOC entry 2018 (class 2606 OID 24621)
+-- TOC entry 2018 (class 2606 OID 24793)
 -- Name: joueur one_equipe_to_many_joueurs; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY joueur
-    ADD CONSTRAINT one_equipe_to_many_joueurs FOREIGN KEY (equipe) REFERENCES equipes(id);
+    ADD CONSTRAINT one_equipe_to_many_joueurs FOREIGN KEY (equipe) REFERENCES equipes(id) ON DELETE CASCADE;
 
 
--- Completed on 2018-09-28 17:31:31
+-- Completed on 2018-09-28 18:07:17
 
 --
 -- PostgreSQL database dump complete
