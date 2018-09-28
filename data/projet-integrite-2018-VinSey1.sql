@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.4
 -- Dumped by pg_dump version 9.6.4
 
--- Started on 2018-09-28 18:11:52
+-- Started on 2018-09-28 19:00:05
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -25,7 +25,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2158 (class 0 OID 0)
+-- TOC entry 2162 (class 0 OID 0)
 -- Dependencies: 1
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
@@ -34,6 +34,49 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 205 (class 1255 OID 24811)
+-- Name: journaliser(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION journaliser() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+
+DECLARE
+	description text;  
+    objetAvant text;
+    objetApres text;
+    operation text;
+BEGIN
+	objetAvant := '';
+    objetApres := '';
+    IF TG_OP = 'UPDATE' THEN
+    	objetAvant := '[' || OLD.nom || ', ' || OLD.annee || ', ' || OLD.region ']';
+        objetApres := '[' || NEW.nom || ', ' || NEW.annee || ', ' || NEW.region ']';
+        operation := 'MODIFIER';
+    END IF;
+    IF TG_OP = 'DELETE' THEN
+        objetAvant := '[' || OLD.nom || ', ' || OLD.annee || ', ' || OLD.region ']';
+        objetApres := '[ ]';
+        operation := 'SUPPRIMER';
+    END IF;
+    IF TG_OP = 'INSERT' THEN
+    	objetAvant := '[ ]';
+        objetApres := '[' || NEW.nom || ', ' || NEW.annee || ', ' || NEW.region ']';
+        operation := 'AJOUTER';
+    END IF;
+
+	description := objetAvant || ' -> ' || objetApres;
+	INSERT INTO journal(moment, operation, objet, description) VALUES(NOW(), operation, 'Equipe', description);
+    RETURN NEW;
+END;
+
+$$;
+
+
+ALTER FUNCTION public.journaliser() OWNER TO postgres;
 
 --
 -- TOC entry 192 (class 1255 OID 24727)
@@ -100,7 +143,7 @@ CREATE SEQUENCE equipes_id_seq
 ALTER TABLE equipes_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2159 (class 0 OID 0)
+-- TOC entry 2163 (class 0 OID 0)
 -- Dependencies: 185
 -- Name: equipes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -140,7 +183,7 @@ CREATE SEQUENCE joueur_id_seq
 ALTER TABLE joueur_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2160 (class 0 OID 0)
+-- TOC entry 2164 (class 0 OID 0)
 -- Dependencies: 187
 -- Name: joueur_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -180,7 +223,7 @@ CREATE SEQUENCE journal_id_seq
 ALTER TABLE journal_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2161 (class 0 OID 0)
+-- TOC entry 2165 (class 0 OID 0)
 -- Dependencies: 189
 -- Name: journal_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -189,7 +232,7 @@ ALTER SEQUENCE journal_id_seq OWNED BY journal.id;
 
 
 --
--- TOC entry 2018 (class 2604 OID 24604)
+-- TOC entry 2019 (class 2604 OID 24604)
 -- Name: equipes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -197,7 +240,7 @@ ALTER TABLE ONLY equipes ALTER COLUMN id SET DEFAULT nextval('equipes_id_seq'::r
 
 
 --
--- TOC entry 2019 (class 2604 OID 24615)
+-- TOC entry 2020 (class 2604 OID 24615)
 -- Name: joueur id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -205,7 +248,7 @@ ALTER TABLE ONLY joueur ALTER COLUMN id SET DEFAULT nextval('joueur_id_seq'::reg
 
 
 --
--- TOC entry 2020 (class 2604 OID 24803)
+-- TOC entry 2021 (class 2604 OID 24803)
 -- Name: journal id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -213,29 +256,29 @@ ALTER TABLE ONLY journal ALTER COLUMN id SET DEFAULT nextval('journal_id_seq'::r
 
 
 --
--- TOC entry 2147 (class 0 OID 24601)
+-- TOC entry 2151 (class 0 OID 24601)
 -- Dependencies: 186
 -- Data for Name: equipes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY equipes (id, nom, annee, region) FROM stdin;
 2	Gambit	2009	Europe
-1	Fnatic	2009	Europe
 3	SKT	2009	Corée
+1	Fnatic	2000	Europe
 \.
 
 
 --
--- TOC entry 2162 (class 0 OID 0)
+-- TOC entry 2166 (class 0 OID 0)
 -- Dependencies: 185
 -- Name: equipes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('equipes_id_seq', 3, true);
+SELECT pg_catalog.setval('equipes_id_seq', 5, true);
 
 
 --
--- TOC entry 2149 (class 0 OID 24612)
+-- TOC entry 2153 (class 0 OID 24612)
 -- Dependencies: 188
 -- Data for Name: joueur; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -256,7 +299,7 @@ COPY joueur (id, nom, nationalite, naissance, equipe) FROM stdin;
 
 
 --
--- TOC entry 2163 (class 0 OID 0)
+-- TOC entry 2167 (class 0 OID 0)
 -- Dependencies: 187
 -- Name: joueur_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -265,7 +308,7 @@ SELECT pg_catalog.setval('joueur_id_seq', 15, true);
 
 
 --
--- TOC entry 2151 (class 0 OID 24800)
+-- TOC entry 2155 (class 0 OID 24800)
 -- Dependencies: 190
 -- Data for Name: journal; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -275,7 +318,7 @@ COPY journal (id, moment, operation, description, objet) FROM stdin;
 
 
 --
--- TOC entry 2164 (class 0 OID 0)
+-- TOC entry 2168 (class 0 OID 0)
 -- Dependencies: 189
 -- Name: journal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -284,7 +327,7 @@ SELECT pg_catalog.setval('journal_id_seq', 1, false);
 
 
 --
--- TOC entry 2022 (class 2606 OID 24609)
+-- TOC entry 2023 (class 2606 OID 24609)
 -- Name: equipes equipes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -293,7 +336,7 @@ ALTER TABLE ONLY equipes
 
 
 --
--- TOC entry 2025 (class 2606 OID 24620)
+-- TOC entry 2026 (class 2606 OID 24620)
 -- Name: joueur joueur_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -302,7 +345,7 @@ ALTER TABLE ONLY joueur
 
 
 --
--- TOC entry 2027 (class 2606 OID 24808)
+-- TOC entry 2028 (class 2606 OID 24808)
 -- Name: journal journal_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -311,7 +354,7 @@ ALTER TABLE ONLY journal
 
 
 --
--- TOC entry 2023 (class 1259 OID 24626)
+-- TOC entry 2024 (class 1259 OID 24626)
 -- Name: fki_one_equipe_to_many_joueurs; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -319,7 +362,31 @@ CREATE INDEX fki_one_equipe_to_many_joueurs ON joueur USING btree (equipe);
 
 
 --
--- TOC entry 2028 (class 2606 OID 24793)
+-- TOC entry 2030 (class 2620 OID 24812)
+-- Name: equipes evenementajouterequipe; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+-- CREATE TRIGGER evenementajouterequipe BEFORE INSERT ON equipes FOR EACH ROW EXECUTE PROCEDURE journaliser();
+
+
+--
+-- TOC entry 2031 (class 2620 OID 24813)
+-- Name: equipes evenementmodifierequipe; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+-- CREATE TRIGGER evenementmodifierequipe BEFORE UPDATE ON equipes FOR EACH ROW EXECUTE PROCEDURE journaliser();
+
+
+--
+-- TOC entry 2032 (class 2620 OID 24814)
+-- Name: equipes evenementsupprimerequipe; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+-- CREATE TRIGGER evenementsupprimerequipe BEFORE DELETE ON equipes FOR EACH ROW EXECUTE PROCEDURE journaliser();
+
+
+--
+-- TOC entry 2029 (class 2606 OID 24793)
 -- Name: joueur one_equipe_to_many_joueurs; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -327,7 +394,7 @@ ALTER TABLE ONLY joueur
     ADD CONSTRAINT one_equipe_to_many_joueurs FOREIGN KEY (equipe) REFERENCES equipes(id) ON DELETE CASCADE;
 
 
--- Completed on 2018-09-28 18:11:52
+-- Completed on 2018-09-28 19:00:06
 
 --
 -- PostgreSQL database dump complete
