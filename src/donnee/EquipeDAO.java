@@ -69,7 +69,7 @@ public class EquipeDAO implements EquipeSQL {
 		try {
 			PreparedStatement requeteAjouterEquipe = connection.prepareStatement(SQL_AJOUTER_EQUIPE);
 			requeteAjouterEquipe.setString(1, equipe.getNom());
-			requeteAjouterEquipe.setString(2, equipe.getAnneeDeCreation());
+			requeteAjouterEquipe.setInt(2, Integer.parseInt(equipe.getAnneeDeCreation()));
 			requeteAjouterEquipe.setString(3, equipe.getRegion());
 			
 			System.out.println("SQL : " + requeteAjouterEquipe);
@@ -105,7 +105,7 @@ public class EquipeDAO implements EquipeSQL {
 		try {
 			PreparedStatement requeteModifierEquipe = connection.prepareStatement(SQL_MODIFIER_EQUIPE);
 			requeteModifierEquipe.setString(1, equipe.getNom());
-			requeteModifierEquipe.setString(2, equipe.getAnneeDeCreation());
+			requeteModifierEquipe.setInt(2, Integer.parseInt(equipe.getAnneeDeCreation()));
 			requeteModifierEquipe.setString(3, equipe.getRegion());
 			requeteModifierEquipe.setInt(4, equipe.getId());
 			
