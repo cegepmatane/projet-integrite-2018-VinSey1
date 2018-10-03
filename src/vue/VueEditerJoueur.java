@@ -23,6 +23,7 @@ public class VueEditerJoueur  extends Scene {
 	protected TextField valeurNom;
 	protected TextField valeurNaissance;
 	protected TextField valeurNationalite;
+	private Joueur joueur;
 	
 	private ControleurJoueur controleurJoueur = null;
 	protected Button actionEnregistrerJoueur = null;
@@ -62,7 +63,9 @@ public class VueEditerJoueur  extends Scene {
 	
 	public Joueur demanderJoueur()
 	{
-		Joueur joueur = new Joueur(this.valeurNom.getText(), this.valeurNationalite.getText(), this.valeurNaissance.getText());
+		this.joueur.setNaissance(this.valeurNaissance.getText());
+		this.joueur.setNom(this.valeurNom.getText());
+		this.joueur.setNationalite(this.valeurNationalite.getText());
 		return joueur;
 	}
 	
@@ -71,6 +74,7 @@ public class VueEditerJoueur  extends Scene {
 	}
 	
 	public void afficherJoueur(Joueur joueur) {
+		this.joueur = joueur;
 		this.valeurNom.setText(joueur.getNom());
 		this.valeurNaissance.setText(joueur.getNaissance());
 		this.valeurNationalite.setText(joueur.getNationalite());

@@ -87,7 +87,9 @@ public class JoueurDAO {
 	public void modifierJoueur(Joueur joueur) {
 		try {
 			Statement requeteModifierJoueur = connection.createStatement();
-			requeteModifierJoueur.execute("UPDATE joueur SET nom = '"+joueur.getNom()+"', nationalite = '"+joueur.getNationalite()+"', naissance = '"+joueur.getNaissance()+"' WHERE id = "+joueur.getId());
+			String SQL = "UPDATE joueur SET nom = '"+joueur.getNom()+"', nationalite = '"+joueur.getNationalite()+"', naissance = '"+joueur.getNaissance()+"' WHERE id = "+joueur.getId();
+			System.out.println(SQL);
+			requeteModifierJoueur.execute(SQL);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
