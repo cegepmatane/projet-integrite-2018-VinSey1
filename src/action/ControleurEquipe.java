@@ -62,7 +62,7 @@ public class ControleurEquipe {
 	}
 	
 	public void notifierEnregistrerEquipe() {
-		System.out.println("ControleurEquipe.notifierEnregistreEquipe()");
+		System.out.println("ControleurEquipe.notifierEnregistrerEquipe()");
 		Equipe equipe = this.navigateur.getVueEditerEquipe().demanderEquipe();
 		this.equipeDAO.modifierEquipe(equipe);
 		this.vueListeEquipe.afficherListeEquipe(this.equipeDAO.listerEquipes());
@@ -70,6 +70,7 @@ public class ControleurEquipe {
 	}
 	
 	public void notifierEnregistrerNouvelleEquipe() {
+		System.out.println("ControleurEquipe.notifierEnregistrerNouvelleEquipe()");
 		Equipe equipe = this.navigateur.getVueAjouterEquipe().demanderEquipe();
 		this.equipeDAO.ajouterEquipe(equipe);
 		this.vueListeEquipe.afficherListeEquipe(this.equipeDAO.listerEquipes());
@@ -84,6 +85,7 @@ public class ControleurEquipe {
 	
 	public void notifierNaviguerEditerEquipe(int idEquipe)
 	{
+		System.out.println("ControleurEquipe.notifierNaviguerEditerEquipe()");
 		this.vueEditerEquipe.afficherEquipe(this.equipeDAO.rapporterEquipe(idEquipe));
 		this.navigateur.naviguerVersVueEditerEquipe();
 		this.vueEditerEquipe.afficherListeJoueurs(this.joueurDAO.listerJoueurs(idEquipe));
