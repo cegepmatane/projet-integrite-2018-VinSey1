@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.4
 -- Dumped by pg_dump version 9.6.4
 
--- Started on 2018-10-03 03:35:53
+-- Started on 2018-10-03 03:52:11
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -34,46 +34,6 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 SET search_path = public, pg_catalog;
-
---
--- TOC entry 212 (class 1255 OID 24871)
--- Name: enregistrer(); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION enregistrer() RETURNS void
-    LANGUAGE plpgsql
-    AS $$
-
-DECLARE
-	equipeCourante RECORD;
-    nombre integer;
-    moyenne integer;
-    checksum text;
-BEGIN
-	FOR equipeCourante IN
-		SELECT * FROM equipes
-    LOOP
-    	moyenne := AVG(naissance) FROM joueur WHERE equipe = equipeCourante.id;
-        nombre := COUNT(*) FROM joueur WHERE equipe = equipeCourante.id;
-        checksum := md5(string_agg(joueur.nationalite::text, '' ORDER BY id)) FROM joueur WHERE equipe = equipeCourante.id;
-    	INSERT INTO "surveillanceJoueurParEquipe"(moment, "nombreJoueurs", "moyenneNaissance", "checksumNationalite") VALUES(NOW(), nombre, moyenne, checksum);
-    END LOOP;
-    
-    moyenne := AVG(annee) FROM equipes;
-    nombre := COUNT(*) FROM equipes;
-    checksum := md5(string_agg(equipes.region::text, '' ORDER BY id)) FROM equipes;
-    INSERT INTO "surveillanceEquipe"(moment, "nombreEquipes", "moyenneAnnee", "checksumRegion") VALUES(NOW(), nombre, moyenne, checksum);
-    
-	moyenne := AVG(naissance) FROM joueur;
-    nombre := COUNT(*) FROM joueur;
-    checksum := md5(string_agg(joueur.nationalite::text, '' ORDER BY id)) FROM joueur;
-    INSERT INTO "surveillanceJoueur"(moment, "nombreJoueurs", "moyenneNaissance", "checksumNationalite") VALUES(NOW(), nombre, moyenne, checksum);
-END
-
-$$;
-
-
-ALTER FUNCTION public.enregistrer() OWNER TO postgres;
 
 --
 -- TOC entry 211 (class 1255 OID 24878)
@@ -147,6 +107,46 @@ $$;
 
 
 ALTER FUNCTION public.nettoyagejoueur() OWNER TO postgres;
+
+--
+-- TOC entry 212 (class 1255 OID 24887)
+-- Name: surveiller(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION surveiller() RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+
+DECLARE
+	equipeCourante RECORD;
+    nombre integer;
+    moyenne integer;
+    checksum text;
+BEGIN
+	FOR equipeCourante IN
+		SELECT * FROM equipes
+    LOOP
+    	moyenne := AVG(naissance) FROM joueur WHERE equipe = equipeCourante.id;
+        nombre := COUNT(*) FROM joueur WHERE equipe = equipeCourante.id;
+        checksum := md5(string_agg(joueur.nationalite::text, '' ORDER BY id)) FROM joueur WHERE equipe = equipeCourante.id;
+    	INSERT INTO "surveillanceJoueurParEquipe"(moment, "nombreJoueurs", "moyenneNaissance", "checksumNationalite") VALUES(NOW(), nombre, moyenne, checksum);
+    END LOOP;
+    
+    moyenne := AVG(annee) FROM equipes;
+    nombre := COUNT(*) FROM equipes;
+    checksum := md5(string_agg(equipes.region::text, '' ORDER BY id)) FROM equipes;
+    INSERT INTO "surveillanceEquipe"(moment, "nombreEquipes", "moyenneAnnee", "checksumRegion") VALUES(NOW(), nombre, moyenne, checksum);
+    
+	moyenne := AVG(naissance) FROM joueur;
+    nombre := COUNT(*) FROM joueur;
+    checksum := md5(string_agg(joueur.nationalite::text, '' ORDER BY id)) FROM joueur;
+    INSERT INTO "surveillanceJoueur"(moment, "nombreJoueurs", "moyenneNaissance", "checksumNationalite") VALUES(NOW(), nombre, moyenne, checksum);
+END
+
+$$;
+
+
+ALTER FUNCTION public.surveiller() OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -542,6 +542,7 @@ SELECT pg_catalog.setval('journal_id_seq', 20, true);
 
 COPY "surveillanceEquipe" (id, moment, "nombreEquipes", "moyenneAnnee", "checksumRegion") FROM stdin;
 6	03:35:14.890852-04	6	2010	c6bbf5fabbbeb091bed6fb81f872a089
+7	03:50:41.526254-04	6	2010	c6bbf5fabbbeb091bed6fb81f872a089
 \.
 
 
@@ -551,7 +552,7 @@ COPY "surveillanceEquipe" (id, moment, "nombreEquipes", "moyenneAnnee", "checksu
 -- Name: surveillanceEquipe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"surveillanceEquipe_id_seq"', 6, true);
+SELECT pg_catalog.setval('"surveillanceEquipe_id_seq"', 7, true);
 
 
 --
@@ -562,6 +563,7 @@ SELECT pg_catalog.setval('"surveillanceEquipe_id_seq"', 6, true);
 
 COPY "surveillanceJoueur" (id, moment, "nombreJoueurs", "moyenneNaissance", "checksumNationalite") FROM stdin;
 4	03:35:14.890852-04	12	2376	c8ab70d963cecfca428967fd8d3013f8
+5	03:50:41.526254-04	12	2376	c8ab70d963cecfca428967fd8d3013f8
 \.
 
 
@@ -578,6 +580,12 @@ COPY "surveillanceJoueurParEquipe" (id, moment, "nombreJoueurs", "moyenneNaissan
 48	03:35:14.890852-04	0	\N	\N
 49	03:35:14.890852-04	3	1998	43f8fc94ea56ebb8e59704878f94768b
 50	03:35:14.890852-04	0	\N	\N
+51	03:50:41.526254-04	3	1998	e64905055661cb5561e8493a1484c563
+52	03:50:41.526254-04	2	4266	68ccb0f747f65a45a0a344d6de47ae04
+53	03:50:41.526254-04	4	1999	57b1ff6f8eaa902ae39492669228e837
+54	03:50:41.526254-04	0	\N	\N
+55	03:50:41.526254-04	3	1998	43f8fc94ea56ebb8e59704878f94768b
+56	03:50:41.526254-04	0	\N	\N
 \.
 
 
@@ -587,7 +595,7 @@ COPY "surveillanceJoueurParEquipe" (id, moment, "nombreJoueurs", "moyenneNaissan
 -- Name: surveillanceJoueurParEquipe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"surveillanceJoueurParEquipe_id_seq"', 50, true);
+SELECT pg_catalog.setval('"surveillanceJoueurParEquipe_id_seq"', 56, true);
 
 
 --
@@ -596,7 +604,7 @@ SELECT pg_catalog.setval('"surveillanceJoueurParEquipe_id_seq"', 50, true);
 -- Name: surveillanceJoueur_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"surveillanceJoueur_id_seq"', 4, true);
+SELECT pg_catalog.setval('"surveillanceJoueur_id_seq"', 5, true);
 
 
 --
@@ -694,7 +702,7 @@ ALTER TABLE ONLY joueur
     ADD CONSTRAINT one_equipe_to_many_joueurs FOREIGN KEY (equipe) REFERENCES equipes(id) ON DELETE CASCADE;
 
 
--- Completed on 2018-10-03 03:35:54
+-- Completed on 2018-10-03 03:52:12
 
 --
 -- PostgreSQL database dump complete
