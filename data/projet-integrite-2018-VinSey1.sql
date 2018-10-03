@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.4
 -- Dumped by pg_dump version 9.6.4
 
--- Started on 2018-09-28 19:44:34
+-- Started on 2018-10-03 00:58:59
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -76,7 +76,7 @@ $$;
 ALTER FUNCTION public.enregistrer() OWNER TO postgres;
 
 --
--- TOC entry 211 (class 1255 OID 24811)
+-- TOC entry 211 (class 1255 OID 24878)
 -- Name: journaliser(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -93,23 +93,23 @@ BEGIN
 	objetAvant := '';
     objetApres := '';
     IF TG_OP = 'UPDATE' THEN
-    	objetAvant := '[' || OLD.nom || ', ' || OLD.annee || ', ' || OLD.region ']';
-        objetApres := '[' || NEW.nom || ', ' || NEW.annee || ', ' || NEW.region ']';
+    	objetAvant := '[' || OLD.nom || ', ' || OLD.annee || ', ' || OLD.region || ']';
+        objetApres := '[' || NEW.nom || ', ' || NEW.annee || ', ' || NEW.region || ']';
         operation := 'MODIFIER';
     END IF;
     IF TG_OP = 'DELETE' THEN
-        objetAvant := '[' || OLD.nom || ', ' || OLD.annee || ', ' || OLD.region ']';
-        objetApres := '[ ]';
-        operation := 'SUPPRIMER';
+       	objetAvant := '[' || OLD.nom || ', ' || OLD.annee || ', ' || OLD.region || ']';
+       	objetApres := '[ ]';
+       	operation := 'SUPPRIMER';
     END IF;
     IF TG_OP = 'INSERT' THEN
     	objetAvant := '[ ]';
-        objetApres := '[' || NEW.nom || ', ' || NEW.annee || ', ' || NEW.region ']';
+        objetApres := '[' || NEW.nom || ', ' || NEW.annee || ', ' || NEW.region || ']';
         operation := 'AJOUTER';
     END IF;
 
 	description := objetAvant || ' -> ' || objetApres;
-	INSERT INTO journal(moment, operation, objet, description) VALUES(NOW(), operation, 'Mouton', description);
+	INSERT INTO journal(moment, operation, objet, description) VALUES(NOW(), operation, 'Équipe', description);
     RETURN NEW;
 END;
 
@@ -449,6 +449,7 @@ COPY equipes (id, nom, annee, region) FROM stdin;
 2	Gambit	2009	Europe
 3	SKT	2009	Corée
 1	Fnatic	2000	Europe
+13	KT Rolsterz	2010	Corée
 \.
 
 
@@ -458,7 +459,7 @@ COPY equipes (id, nom, annee, region) FROM stdin;
 -- Name: equipes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('equipes_id_seq', 5, true);
+SELECT pg_catalog.setval('equipes_id_seq', 13, true);
 
 
 --
@@ -470,7 +471,6 @@ SELECT pg_catalog.setval('equipes_id_seq', 5, true);
 COPY joueur (id, nom, nationalite, naissance, equipe) FROM stdin;
 2	Eliott	France	05/11/1998	1
 3	Valentin	France	05/11/1998	1
-4	Youssef	France	05/11/1998	2
 5	Michaël	Canada	05/11/1998	2
 6	John	Russie	05/11/1998	2
 7	Mike	Corée	05/11/1998	3
@@ -479,6 +479,8 @@ COPY joueur (id, nom, nationalite, naissance, equipe) FROM stdin;
 1	Vincent	France	05/11/1998	1
 14	Faker	Corée	11/09/1995	3
 15	Youssef2	Corée	ouais	2
+16	Valentin2	France	04/11/1995	2
+4	Flo	France	05/11/1998	2
 \.
 
 
@@ -488,7 +490,7 @@ COPY joueur (id, nom, nationalite, naissance, equipe) FROM stdin;
 -- Name: joueur_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('joueur_id_seq', 15, true);
+SELECT pg_catalog.setval('joueur_id_seq', 16, true);
 
 
 --
@@ -498,6 +500,9 @@ SELECT pg_catalog.setval('joueur_id_seq', 15, true);
 --
 
 COPY journal (id, moment, operation, description, objet) FROM stdin;
+1	2018-10-02 23:23:20.862427-04	AJOUTER	[ ] -> [KT Rolster, 2010, Corée]	Équipe
+2	2018-10-02 23:33:33.411174-04	MODIFIER	[KT Rolster, 2010, Corée] -> [KT Rolsterz, 2010, Corée]	Équipe
+3	2018-10-02 23:34:22.281661-04	SUPPRIMER	[KT Rolsterz, 2010, Corée] -> [ ]	Équipe
 \.
 
 
@@ -507,7 +512,7 @@ COPY journal (id, moment, operation, description, objet) FROM stdin;
 -- Name: journal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('journal_id_seq', 1, false);
+SELECT pg_catalog.setval('journal_id_seq', 3, true);
 
 
 --
@@ -630,7 +635,7 @@ CREATE INDEX fki_one_equipe_to_many_joueurs ON joueur USING btree (equipe);
 
 
 --
--- TOC entry 2060 (class 2620 OID 24812)
+-- TOC entry 2060 (class 2620 OID 24881)
 -- Name: equipes evenementajouterequipe; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -638,7 +643,7 @@ CREATE TRIGGER evenementajouterequipe BEFORE INSERT ON equipes FOR EACH ROW EXEC
 
 
 --
--- TOC entry 2061 (class 2620 OID 24813)
+-- TOC entry 2061 (class 2620 OID 24882)
 -- Name: equipes evenementmodifierequipe; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -646,7 +651,7 @@ CREATE TRIGGER evenementmodifierequipe BEFORE UPDATE ON equipes FOR EACH ROW EXE
 
 
 --
--- TOC entry 2062 (class 2620 OID 24814)
+-- TOC entry 2062 (class 2620 OID 24883)
 -- Name: equipes evenementsupprimerequipe; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
@@ -662,7 +667,7 @@ ALTER TABLE ONLY joueur
     ADD CONSTRAINT one_equipe_to_many_joueurs FOREIGN KEY (equipe) REFERENCES equipes(id) ON DELETE CASCADE;
 
 
--- Completed on 2018-09-28 19:44:34
+-- Completed on 2018-10-03 00:58:59
 
 --
 -- PostgreSQL database dump complete
