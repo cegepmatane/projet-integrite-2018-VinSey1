@@ -3,13 +3,14 @@ package donnee;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import modele.Equipe;
 
-public class EquipeDAO {
+public class EquipeDAO implements EquipeSQL {
 	
 	/*private List<Equipe> simulerListeEquipe(){
 		List listeEquipesTest = new ArrayList<Equipe>();
@@ -40,18 +41,18 @@ public class EquipeDAO {
 	}
 		
 	public List<Equipe> listerEquipes(){
-		
 		List<Equipe> listeEquipes = new ArrayList<Equipe>();
-		Statement requeteListeEquipes;
+		PreparedStatement requeteListeEquipes;
 		try {
-			requeteListeEquipes = connection.createStatement();
-			ResultSet curseurListeEquipes = requeteListeEquipes.executeQuery("SELECT * FROM equipes");
+			requeteListeEquipes = connection.prepareStatement(SQL_LISTER_EQUIPES);
+			System.out.println("SQL : " + requeteListeEquipes);
+
+			ResultSet curseurListeEquipes = requeteListeEquipes.executeQuery();
 			while(curseurListeEquipes.next()) {
 				int id = curseurListeEquipes.getInt("id");
 				String nom = curseurListeEquipes.getString("nom");
 				String anneDeCreation = curseurListeEquipes.getString("annee");
 				String region = curseurListeEquipes.getString("region");
-				System.out.println("Équipe " + nom + " créée le " + anneDeCreation + " en " + region);
 				Equipe equipe = new Equipe(nom, anneDeCreation, region);
 				equipe.setId(id);
 				listeEquipes.add(equipe);
@@ -65,27 +66,32 @@ public class EquipeDAO {
 	}
 	
 	public void ajouterEquipe(Equipe equipe) {
-		System.out.println("EquipeDAO.ajouterEquipe()");
 		try {
-			Statement requeteAjouterEquipe = connection.createStatement();
-			requeteAjouterEquipe.execute("INSERT into equipes(nom, annee, region) VALUES('"+equipe.getNom()+"','"+equipe.getAnneeDeCreation()+"','"+equipe.getRegion()+"')");
+			PreparedStatement requeteAjouterEquipe = connection.prepareStatement(SQL_AJOUTER_EQUIPE);
+			requeteAjouterEquipe.setString(1, equipe.getNom());
+			requeteAjouterEquipe.setString(2, equipe.getAnneeDeCreation());
+			requeteAjouterEquipe.setString(3, equipe.getRegion());
+			
+			System.out.println("SQL : " + requeteAjouterEquipe);
+			requeteAjouterEquipe.execute();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public Equipe rapporterEquipe(int idEquipe) {
-		Statement requeteEquipe;
+		PreparedStatement requeteEquipe;
 		try {
-			requeteEquipe = connection.createStatement();
-			String SQL_RAPPORTER_EQUIPE = "SELECT * FROM equipes WHERE id = "+idEquipe;
-			ResultSet curseurEquipe = requeteEquipe.executeQuery(SQL_RAPPORTER_EQUIPE);
+			requeteEquipe = connection.prepareStatement(SQL_RAPPORTER_EQUIPE);
+			requeteEquipe.setInt(1, idEquipe);
+			System.out.println("SQL : " + requeteEquipe);
+			ResultSet curseurEquipe = requeteEquipe.executeQuery();
 			curseurEquipe.next();
 			int id = curseurEquipe.getInt("id");
 			String nom = curseurEquipe.getString("nom");
 			String anneDeCreation = curseurEquipe.getString("annee");
 			String region = curseurEquipe.getString("region");
-			System.out.println("Équipe " + nom + " créée le " + anneDeCreation + " en " + region);
 			Equipe equipe = new Equipe(nom, anneDeCreation, region);
 			equipe.setId(id);
 			return equipe;			
@@ -97,9 +103,15 @@ public class EquipeDAO {
 	
 	public void modifierEquipe(Equipe equipe) {
 		try {
-			Statement requeteModifierEquipe = connection.createStatement();
-			String SQL_MODIFIER_EQUIPE = "UPDATE equipes SET nom = '"+equipe.getNom()+"', annee = '"+equipe.getAnneeDeCreation()+"', region = '"+equipe.getRegion()+"' WHERE id = " + equipe.getId();
-			requeteModifierEquipe.execute(SQL_MODIFIER_EQUIPE);
+			PreparedStatement requeteModifierEquipe = connection.prepareStatement(SQL_MODIFIER_EQUIPE);
+			requeteModifierEquipe.setString(1, equipe.getNom());
+			requeteModifierEquipe.setString(2, equipe.getAnneeDeCreation());
+			requeteModifierEquipe.setString(3, equipe.getRegion());
+			requeteModifierEquipe.setInt(4, equipe.getId());
+			
+			System.out.println("SQL : " + requeteModifierEquipe);
+			requeteModifierEquipe.execute();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
