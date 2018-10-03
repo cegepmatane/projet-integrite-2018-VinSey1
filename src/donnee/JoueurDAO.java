@@ -2,6 +2,7 @@ package donnee;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,7 +12,7 @@ import java.util.List;
 import modele.Equipe;
 import modele.Joueur;
 
-public class JoueurDAO {
+public class JoueurDAO implements JoueurSQL {
 	private static String BASEDEDONNEES_DRIVER = "org.postgresql.Driver";
 	private static String BASEDEDONNEES_URL = "jdbc:postgresql://localhost:5432/projet-integrite-2018-VinSey1";
 	private static String BASEDEDONNEES_USAGER = "postgres";
@@ -34,10 +35,12 @@ public class JoueurDAO {
 	
 	public List<Joueur> listerJoueurs(int idEquipe){
 		List<Joueur> listeJoueurs = new ArrayList<Joueur>();
-		Statement requeteListeJoueurs;
+		PreparedStatement requeteListeJoueurs;
 		try {
-			requeteListeJoueurs = connection.createStatement();
-			ResultSet curseurListeJoueurs = requeteListeJoueurs.executeQuery("SELECT * FROM joueur WHERE equipe = "+idEquipe);
+			requeteListeJoueurs = connection.prepareStatement(SQL_LISTER_JOUEURS);
+			requeteListeJoueurs.setInt(1, idEquipe);
+			System.out.println("SQL : " + requeteListeJoueurs);
+			ResultSet curseurListeJoueurs = requeteListeJoueurs.executeQuery();
 			while (curseurListeJoueurs.next()){
 				int id = curseurListeJoueurs.getInt("id");
 				String nom = curseurListeJoueurs.getString("nom");
@@ -56,11 +59,12 @@ public class JoueurDAO {
 	}
 	
 	public Joueur rapporterJoueur(int idJoueur) {
-		Statement requeteJoueur;
+		PreparedStatement requeteJoueur;
 		try {
-			requeteJoueur = connection.createStatement();
-			String SQL_RAPPORTER_JOUEUR = "SELECT * FROM joueur WHERE id = "+idJoueur;
-			ResultSet curseurJoueur = requeteJoueur.executeQuery(SQL_RAPPORTER_JOUEUR);
+			requeteJoueur = connection.prepareStatement(SQL_RAPPORTER_JOUEUR);
+			requeteJoueur.setInt(1, idJoueur);
+			System.out.println("SQL : " + requeteJoueur);
+			ResultSet curseurJoueur = requeteJoueur.executeQuery();
 			curseurJoueur.next();
 			int id = curseurJoueur.getInt("id");
 			String nom = curseurJoueur.getString("nom");
@@ -77,19 +81,33 @@ public class JoueurDAO {
 
 	public void ajouterJoueur(Joueur joueur, int idEquipe) {
 		try {
-			Statement requeteAjouterJoueur = connection.createStatement();
-			requeteAjouterJoueur.execute("INSERT into joueur(nom, nationalite, naissance, equipe) VALUES('"+joueur.getNom()+"','"+joueur.getNationalite()+"','"+Integer.parseInt(joueur.getNaissance())+"','"+idEquipe+"')");
+			PreparedStatement requeteAjouterJoueur = connection.prepareStatement(SQL_AJOUTER_JOUEUR);
+			requeteAjouterJoueur.setString(1, joueur.getNom());
+			requeteAjouterJoueur.setString(2, joueur.getNationalite());
+			
+			requeteAjouterJoueur.setInt(3, Integer.parseInt(joueur.getNaissance()));
+			requeteAjouterJoueur.setInt(4, idEquipe);
+			
+			System.out.println("SQL : " + requeteAjouterJoueur);
+			requeteAjouterJoueur.execute();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 	
 	public void modifierJoueur(Joueur joueur) {
 		try {
-			Statement requeteModifierJoueur = connection.createStatement();
-			String SQL = "UPDATE joueur SET nom = '"+joueur.getNom()+"', nationalite = '"+joueur.getNationalite()+"', naissance = '"+Integer.parseInt(joueur.getNaissance())+"' WHERE id = "+joueur.getId();
-			System.out.println(SQL);
-			requeteModifierJoueur.execute(SQL);
+			PreparedStatement requeteModifierJoueur = connection.prepareStatement(SQL_MODIFIER_JOUEUR);
+			requeteModifierJoueur.setString(1, joueur.getNom());
+			requeteModifierJoueur.setString(2, joueur.getNationalite());
+			
+			requeteModifierJoueur.setInt(3, Integer.parseInt(joueur.getNaissance()));
+			requeteModifierJoueur.setInt(4, joueur.getId());
+			
+			System.out.println("SQL : " + requeteModifierJoueur);
+			requeteModifierJoueur.execute();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
