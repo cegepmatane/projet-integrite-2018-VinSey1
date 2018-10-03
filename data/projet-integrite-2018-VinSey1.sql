@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.4
 -- Dumped by pg_dump version 9.6.4
 
--- Started on 2018-10-03 03:19:15
+-- Started on 2018-10-03 03:35:53
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -55,18 +55,18 @@ BEGIN
     LOOP
     	moyenne := AVG(naissance) FROM joueur WHERE equipe = equipeCourante.id;
         nombre := COUNT(*) FROM joueur WHERE equipe = equipeCourante.id;
-        checksum := 'ne marche pas';
+        checksum := md5(string_agg(joueur.nationalite::text, '' ORDER BY id)) FROM joueur WHERE equipe = equipeCourante.id;
     	INSERT INTO "surveillanceJoueurParEquipe"(moment, "nombreJoueurs", "moyenneNaissance", "checksumNationalite") VALUES(NOW(), nombre, moyenne, checksum);
     END LOOP;
     
     moyenne := AVG(annee) FROM equipes;
     nombre := COUNT(*) FROM equipes;
-    checksum := 'ne marche pas';
+    checksum := md5(string_agg(equipes.region::text, '' ORDER BY id)) FROM equipes;
     INSERT INTO "surveillanceEquipe"(moment, "nombreEquipes", "moyenneAnnee", "checksumRegion") VALUES(NOW(), nombre, moyenne, checksum);
     
 	moyenne := AVG(naissance) FROM joueur;
     nombre := COUNT(*) FROM joueur;
-    checksum := 'ne marche pas';
+    checksum := md5(string_agg(joueur.nationalite::text, '' ORDER BY id)) FROM joueur;
     INSERT INTO "surveillanceJoueur"(moment, "nombreJoueurs", "moyenneNaissance", "checksumNationalite") VALUES(NOW(), nombre, moyenne, checksum);
 END
 
@@ -541,7 +541,7 @@ SELECT pg_catalog.setval('journal_id_seq', 20, true);
 --
 
 COPY "surveillanceEquipe" (id, moment, "nombreEquipes", "moyenneAnnee", "checksumRegion") FROM stdin;
-3	03:17:59.295314-04	6	2010	ne marche pas
+6	03:35:14.890852-04	6	2010	c6bbf5fabbbeb091bed6fb81f872a089
 \.
 
 
@@ -551,7 +551,7 @@ COPY "surveillanceEquipe" (id, moment, "nombreEquipes", "moyenneAnnee", "checksu
 -- Name: surveillanceEquipe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"surveillanceEquipe_id_seq"', 3, true);
+SELECT pg_catalog.setval('"surveillanceEquipe_id_seq"', 6, true);
 
 
 --
@@ -561,7 +561,7 @@ SELECT pg_catalog.setval('"surveillanceEquipe_id_seq"', 3, true);
 --
 
 COPY "surveillanceJoueur" (id, moment, "nombreJoueurs", "moyenneNaissance", "checksumNationalite") FROM stdin;
-1	03:17:59.295314-04	12	2376	ne marche pas
+4	03:35:14.890852-04	12	2376	c8ab70d963cecfca428967fd8d3013f8
 \.
 
 
@@ -572,12 +572,12 @@ COPY "surveillanceJoueur" (id, moment, "nombreJoueurs", "moyenneNaissance", "che
 --
 
 COPY "surveillanceJoueurParEquipe" (id, moment, "nombreJoueurs", "moyenneNaissance", "checksumNationalite") FROM stdin;
-27	03:17:59.295314-04	3	1998	ne marche pas
-28	03:17:59.295314-04	2	4266	ne marche pas
-29	03:17:59.295314-04	4	1999	ne marche pas
-30	03:17:59.295314-04	0	\N	ne marche pas
-31	03:17:59.295314-04	3	1998	ne marche pas
-32	03:17:59.295314-04	0	\N	ne marche pas
+45	03:35:14.890852-04	3	1998	e64905055661cb5561e8493a1484c563
+46	03:35:14.890852-04	2	4266	68ccb0f747f65a45a0a344d6de47ae04
+47	03:35:14.890852-04	4	1999	57b1ff6f8eaa902ae39492669228e837
+48	03:35:14.890852-04	0	\N	\N
+49	03:35:14.890852-04	3	1998	43f8fc94ea56ebb8e59704878f94768b
+50	03:35:14.890852-04	0	\N	\N
 \.
 
 
@@ -587,7 +587,7 @@ COPY "surveillanceJoueurParEquipe" (id, moment, "nombreJoueurs", "moyenneNaissan
 -- Name: surveillanceJoueurParEquipe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"surveillanceJoueurParEquipe_id_seq"', 32, true);
+SELECT pg_catalog.setval('"surveillanceJoueurParEquipe_id_seq"', 50, true);
 
 
 --
@@ -596,7 +596,7 @@ SELECT pg_catalog.setval('"surveillanceJoueurParEquipe_id_seq"', 32, true);
 -- Name: surveillanceJoueur_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"surveillanceJoueur_id_seq"', 1, true);
+SELECT pg_catalog.setval('"surveillanceJoueur_id_seq"', 4, true);
 
 
 --
@@ -694,7 +694,7 @@ ALTER TABLE ONLY joueur
     ADD CONSTRAINT one_equipe_to_many_joueurs FOREIGN KEY (equipe) REFERENCES equipes(id) ON DELETE CASCADE;
 
 
--- Completed on 2018-10-03 03:19:15
+-- Completed on 2018-10-03 03:35:54
 
 --
 -- PostgreSQL database dump complete
