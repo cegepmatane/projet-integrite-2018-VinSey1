@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.4
 -- Dumped by pg_dump version 9.6.4
 
--- Started on 2018-10-03 00:58:59
+-- Started on 2018-10-03 01:38:07
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -51,9 +51,9 @@ DECLARE
     checksum text;
 BEGIN
 	FOR equipeCourante IN
-		SELECT * FROM equipe
+		SELECT * FROM equipes
     LOOP
-    	moyenne := AVG(naisance) FROM joueur WHERE equipe = equipeCourante.id;
+    	moyenne := AVG(naissance) FROM joueur WHERE equipe = equipeCourante.id;
         nombre := COUNT(*) FROM joueur WHERE equipe = equipeCourante.id;
         checksum := sum(crc32(nationalite)) FROM joueur WHERE equipe = equipeCourante.id;
     	INSERT INTO surveillanceJoueurParEquipe(moment, nombreJoueurs, moyenneNaissance, checksumNationalite) VALUES(NOW(), nombre, moyenne, checksum);
@@ -200,8 +200,8 @@ CREATE TABLE joueur (
     id integer NOT NULL,
     nom text,
     nationalite text,
-    naissance text,
-    equipe integer
+    equipe integer,
+    naissance integer
 );
 
 
@@ -468,19 +468,16 @@ SELECT pg_catalog.setval('equipes_id_seq', 13, true);
 -- Data for Name: joueur; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY joueur (id, nom, nationalite, naissance, equipe) FROM stdin;
-2	Eliott	France	05/11/1998	1
-3	Valentin	France	05/11/1998	1
-5	Michaël	Canada	05/11/1998	2
-6	John	Russie	05/11/1998	2
-7	Mike	Corée	05/11/1998	3
-8	Shen	Corée	05/11/1998	3
-9	Neo	Corée	05/11/1998	3
-1	Vincent	France	05/11/1998	1
-14	Faker	Corée	11/09/1995	3
-15	Youssef2	Corée	ouais	2
-16	Valentin2	France	04/11/1995	2
-4	Flo	France	05/11/1998	2
+COPY joueur (id, nom, nationalite, equipe, naissance) FROM stdin;
+2	Eliott	France	1	2000
+1	Vincent	France	1	1998
+4	Flo	France	2	1998
+3	Valentin	France	1	1995
+6	John	Russie	2	1998
+5	Michaël	Canada	2	1998
+8	Shen	Corée	3	1998
+7	Mike	Corée	3	1998
+9	Neo	Corée	3	1998
 \.
 
 
@@ -490,7 +487,7 @@ COPY joueur (id, nom, nationalite, naissance, equipe) FROM stdin;
 -- Name: joueur_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('joueur_id_seq', 16, true);
+SELECT pg_catalog.setval('joueur_id_seq', 19, true);
 
 
 --
@@ -667,7 +664,7 @@ ALTER TABLE ONLY joueur
     ADD CONSTRAINT one_equipe_to_many_joueurs FOREIGN KEY (equipe) REFERENCES equipes(id) ON DELETE CASCADE;
 
 
--- Completed on 2018-10-03 00:58:59
+-- Completed on 2018-10-03 01:38:07
 
 --
 -- PostgreSQL database dump complete

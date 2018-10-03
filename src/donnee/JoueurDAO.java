@@ -78,7 +78,7 @@ public class JoueurDAO {
 	public void ajouterJoueur(Joueur joueur, int idEquipe) {
 		try {
 			Statement requeteAjouterJoueur = connection.createStatement();
-			requeteAjouterJoueur.execute("INSERT into joueur(nom, nationalite, naissance, equipe) VALUES('"+joueur.getNom()+"','"+joueur.getNationalite()+"','"+joueur.getNaissance()+"','"+idEquipe+"')");
+			requeteAjouterJoueur.execute("INSERT into joueur(nom, nationalite, naissance, equipe) VALUES('"+joueur.getNom()+"','"+joueur.getNationalite()+"','"+Integer.parseInt(joueur.getNaissance())+"','"+idEquipe+"')");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
@@ -87,7 +87,7 @@ public class JoueurDAO {
 	public void modifierJoueur(Joueur joueur) {
 		try {
 			Statement requeteModifierJoueur = connection.createStatement();
-			String SQL = "UPDATE joueur SET nom = '"+joueur.getNom()+"', nationalite = '"+joueur.getNationalite()+"', naissance = '"+joueur.getNaissance()+"' WHERE id = "+joueur.getId();
+			String SQL = "UPDATE joueur SET nom = '"+joueur.getNom()+"', nationalite = '"+joueur.getNationalite()+"', naissance = '"+Integer.parseInt(joueur.getNaissance())+"' WHERE id = "+joueur.getId();
 			System.out.println(SQL);
 			requeteModifierJoueur.execute(SQL);
 		} catch (SQLException e) {
